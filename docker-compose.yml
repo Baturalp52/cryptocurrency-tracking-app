@@ -5,7 +5,6 @@ services:
     container_name: crypto_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: crypto_db
       MYSQL_USER: crypto_user
       MYSQL_PASSWORD: crypto_password

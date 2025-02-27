@@ -3,11 +3,10 @@
 ## Project Setup
 
 - [x] Set up CoinMarketCap API key
-- [ ] Create new Laravel project
-- [ ] Set up composer for dependency management
-- [ ] Configure NPM and Laravel Mix
+- [x] Create new Laravel project
+- [x] Set up composer for dependency management
 - [x] Create Docker Compose file for database
-- [ ] Configure database connection in Laravel
+- [x] Configure database connection in Laravel
 - [ ] Create README.md with setup instructions
 - [ ] Create Next.js frontend project
 
