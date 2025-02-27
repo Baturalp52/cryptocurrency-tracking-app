@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -41,7 +41,9 @@ export default function Navbar() {
           </ul>
 
           <div className="d-flex">
-            {user ? (
+            {loading ? (
+              <span className="navbar-text me-3">Loading...</span>
+            ) : user ? (
               <>
                 <span className="navbar-text me-3">Welcome, {user.name}</span>
                 <button className="btn btn-outline-light" onClick={logout}>
