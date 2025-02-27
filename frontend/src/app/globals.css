@@ -1,3 +1,23 @@
+/* Prevent flash of wrong theme */
+:root {
+  color-scheme: light dark;
+}
+
+html.theme-initialized {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Ensure the body background matches the theme immediately */
+html[data-bs-theme="dark"] body {
+  background-color: var(--bg-body, #0f172a);
+  color: var(--text-primary, #f8fafc);
+}
+
+html[data-bs-theme="light"] body {
+  background-color: var(--bg-body, #f8fafc);
+  color: var(--text-primary, #0f172a);
+}
+
 /* Custom styles for the application */
 @import "./theme.css";
 

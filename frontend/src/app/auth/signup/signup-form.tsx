@@ -11,32 +11,43 @@ export default function SignupForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { signup, error } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError("");
+    setIsSubmitting(true);
 
     // Basic validation
     if (!name || !email || !password || !confirmPassword) {
       setFormError("Please fill in all fields");
+      setIsSubmitting(false);
       return;
     }
 
     if (password !== confirmPassword) {
       setFormError("Passwords do not match");
+      setIsSubmitting(false);
       return;
     }
 
     if (password.length < 6) {
       setFormError("Password must be at least 6 characters long");
+      setIsSubmitting(false);
       return;
     }
 
-    const success = await signup(name, email, password);
-    if (success) {
-      router.push("/");
+    try {
+      const success = await signup(name, email, password);
+      if (success) {
+        router.push("/");
+      }
+    } catch (err) {
+      console.error("Signup error:", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -63,6 +74,7 @@ export default function SignupForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              disabled={isSubmitting}
             />
           </div>
 
@@ -77,6 +89,7 @@ export default function SignupForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isSubmitting}
             />
           </div>
 
@@ -91,6 +104,7 @@ export default function SignupForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isSubmitting}
             />
           </div>
 
@@ -105,12 +119,28 @@ export default function SignupForm() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              disabled={isSubmitting}
             />
           </div>
 
           <div className="d-grid gap-2">
-            <button type="submit" className="btn btn-primary">
-              Sign Up
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Creating account...
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </button>
           </div>
 

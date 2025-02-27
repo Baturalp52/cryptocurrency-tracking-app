@@ -29,7 +29,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* This script runs immediately during HTML parsing, before any other JavaScript */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  // Try to get the saved theme from localStorage
+                  var savedTheme = localStorage.getItem('theme');
+                  
+                  // If no saved theme, check system preference
+                  if (!savedTheme || savedTheme === 'system') {
+                    savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches 
+                      ? 'dark' 
+                      : 'light';
+                  }
+                  
+                  // Apply theme to document immediately
+                  document.documentElement.setAttribute('data-bs-theme', savedTheme);
+                  
+                  // Add a class to indicate theme is set
+                  document.documentElement.classList.add('theme-initialized');
+                } catch (e) {
+                  // Fallback to light theme if there's any error
+                  document.documentElement.setAttribute('data-bs-theme', 'light');
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} d-flex flex-column min-vh-100`}
       >

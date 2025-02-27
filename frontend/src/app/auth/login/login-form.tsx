@@ -9,22 +9,31 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [formError, setFormError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { login, error } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError("");
+    setIsSubmitting(true);
 
     // Basic validation
     if (!email || !password) {
       setFormError("Please fill in all fields");
+      setIsSubmitting(false);
       return;
     }
 
-    const success = await login(email, password);
-    if (success) {
-      router.push("/");
+    try {
+      const success = await login(email, password);
+      if (success) {
+        router.push("/");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -51,6 +60,7 @@ export default function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={isSubmitting}
             />
           </div>
 
@@ -65,12 +75,28 @@ export default function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={isSubmitting}
             />
           </div>
 
           <div className="d-grid gap-2">
-            <button type="submit" className="btn btn-primary">
-              Login
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
             </button>
           </div>
 

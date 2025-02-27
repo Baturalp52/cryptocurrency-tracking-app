@@ -1,19 +1,15 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import * as authService from "@/services/auth";
+import { User } from "@/services/auth";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   signup: (name: string, email: string, password: string) => Promise<boolean>;
-  logout: () => void;
+  logout: () => Promise<void>;
   error: string | null;
 }
 
@@ -27,39 +23,67 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Check if user is logged in from localStorage
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+    const token = localStorage.getItem("token");
+
+    if (storedUser && token) {
       try {
         setUser(JSON.parse(storedUser));
+
+        // Verify token is valid by fetching current user
+        const verifyToken = async () => {
+          try {
+            const currentUser = await authService.getCurrentUser();
+            setUser(currentUser);
+          } catch {
+            // Token is invalid, clear localStorage
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            setUser(null);
+          }
+        };
+
+        verifyToken();
       } catch {
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
       }
     }
+
     setLoading(false);
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const login = async (email: string, _password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
     try {
-      // TODO: Replace with actual API call to backend
-      // This is a mock implementation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await authService.login({ email, password });
 
-      // Mock successful login
-      const mockUser = {
-        id: "1",
-        email,
-        name: "User",
-      };
+      // Save user and token to localStorage
+      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("token", response.token);
 
-      setUser(mockUser);
-      localStorage.setItem("user", JSON.stringify(mockUser));
+      setUser(response.user);
       setLoading(false);
       return true;
-    } catch {
-      setError("Login failed. Please check your credentials.");
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : typeof err === "object" &&
+            err !== null &&
+            "response" in err &&
+            err.response &&
+            typeof err.response === "object" &&
+            "data" in err.response &&
+            err.response.data &&
+            typeof err.response.data === "object" &&
+            "message" in err.response.data &&
+            typeof err.response.data.message === "string"
+          ? err.response.data.message
+          : "Login failed. Please check your credentials.";
+
+      setError(errorMessage);
       setLoading(false);
       return false;
     }
@@ -68,38 +92,63 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signup = async (
     name: string,
     email: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _password: string
+    password: string
   ): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
     try {
-      // TODO: Replace with actual API call to backend
-      // This is a mock implementation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock successful signup
-      const mockUser = {
-        id: "1",
-        email,
+      const response = await authService.signup({
         name,
-      };
+        email,
+        password,
+        password_confirmation: password,
+      });
 
-      setUser(mockUser);
-      localStorage.setItem("user", JSON.stringify(mockUser));
+      // Save user and token to localStorage
+      localStorage.setItem("user", JSON.stringify(response.user));
+      localStorage.setItem("token", response.token);
+
+      setUser(response.user);
       setLoading(false);
       return true;
-    } catch {
-      setError("Signup failed. Please try again.");
+    } catch (err: unknown) {
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : typeof err === "object" &&
+            err !== null &&
+            "response" in err &&
+            err.response &&
+            typeof err.response === "object" &&
+            "data" in err.response &&
+            err.response.data &&
+            typeof err.response.data === "object" &&
+            "message" in err.response.data &&
+            typeof err.response.data.message === "string"
+          ? err.response.data.message
+          : "Signup failed. Please try again.";
+
+      setError(errorMessage);
       setLoading(false);
       return false;
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("user");
+  const logout = async () => {
+    setLoading(true);
+
+    try {
+      await authService.logout();
+    } catch (err) {
+      console.error("Logout error:", err);
+    } finally {
+      // Clear user data regardless of API success
+      setUser(null);
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      setLoading(false);
+    }
   };
 
   return (
