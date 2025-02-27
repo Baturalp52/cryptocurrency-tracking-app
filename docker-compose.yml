@@ -1,0 +1,20 @@
+services:
+  # MySQL Database
+  db:
+    image: mysql:8.0
+    container_name: crypto_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: crypto_db
+      MYSQL_USER: crypto_user
+      MYSQL_PASSWORD: crypto_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql_data:
+    driver: local

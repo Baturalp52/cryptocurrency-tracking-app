@@ -6,7 +6,7 @@
 - [ ] Create new Laravel project
 - [ ] Set up composer for dependency management
 - [ ] Configure NPM and Laravel Mix
-- [ ] Create Docker Compose file for database
+- [x] Create Docker Compose file for database
 - [ ] Configure database connection in Laravel
 - [ ] Create README.md with setup instructions
 - [ ] Create Next.js frontend project
