@@ -8,7 +8,7 @@
 - [x] Create Docker Compose file for database
 - [x] Configure database connection in Laravel
 - [ ] Create README.md with setup instructions
-- [ ] Create Next.js frontend project
+- [x] Create Next.js frontend project
 
 ## Backend Development (Laravel)
 
@@ -24,8 +24,8 @@
 
 ## Frontend Development (Next.js)
 
-- [ ] Set up Next.js project with TypeScript
-- [ ] Configure Bootstrap integration
+- [x] Set up Next.js project with TypeScript
+- [x] Configure Bootstrap integration
 - [ ] Create responsive layouts with React components
 - [ ] Implement API service for communication with Laravel backend
 - [ ] Build cryptocurrency listing page
