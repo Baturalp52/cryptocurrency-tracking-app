@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Bootstrap from "./bootstrap";
 import { AuthProvider } from "@/contexts/auth-context";
+import { ThemeProvider } from "@/contexts/theme-context";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -33,10 +34,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} d-flex flex-column min-vh-100`}
       >
         <AuthProvider>
-          <Navbar />
-          <main className="py-4 flex-grow-1">{children}</main>
-          <Footer />
-          <Bootstrap />
+          <ThemeProvider>
+            <Navbar />
+            <main className="py-4 flex-grow-1">{children}</main>
+            <Footer />
+            <Bootstrap />
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>

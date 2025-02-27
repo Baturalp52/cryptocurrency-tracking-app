@@ -9,7 +9,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg">
       <div className="container">
         <Link href="/" className="navbar-brand">
           Crypto Tracker
@@ -37,44 +37,39 @@ export default function Navbar() {
                 Home
               </Link>
             </li>
-            {/* Add more navigation items here */}
           </ul>
 
-          <div className="d-flex">
-            {loading ? (
-              <span className="navbar-text me-3">Loading...</span>
-            ) : user ? (
-              <>
-                <span className="navbar-text me-3">Welcome, {user.name}</span>
-                <button className="btn btn-outline-light" onClick={logout}>
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href="/auth/login"
-                  className={`btn ${
-                    pathname === "/auth/login"
-                      ? "btn-light"
-                      : "btn-outline-light"
-                  } me-2`}
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/auth/signup"
-                  className={`btn ${
-                    pathname === "/auth/signup"
-                      ? "btn-light"
-                      : "btn-outline-light"
-                  }`}
-                >
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
+          {loading ? (
+            <span className="navbar-text me-3">Loading...</span>
+          ) : user ? (
+            <>
+              <span className="navbar-text me-3">Welcome, {user.name}</span>
+              <button className="btn btn-outline-light" onClick={logout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/auth/login"
+                className={`btn ${
+                  pathname === "/auth/login" ? "btn-light" : "btn-outline-light"
+                } me-2`}
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/signup"
+                className={`btn ${
+                  pathname === "/auth/signup"
+                    ? "btn-light"
+                    : "btn-outline-light"
+                }`}
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

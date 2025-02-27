@@ -34,7 +34,7 @@
 - [ ] Add search and filter functionality
 - [ ] Create user authentication flow
 - [ ] Implement favorites/watchlist feature
-- [ ] Add dark/light mode toggle
+- [x] Add dark/light mode toggle
 
 ## Admin Panel
 

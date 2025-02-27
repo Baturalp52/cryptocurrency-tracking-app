@@ -1,6 +1,7 @@
 /* Custom styles for the application */
+@import "./theme.css";
 
-/* Fade-in animation */
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -22,15 +23,52 @@
   margin: 0 auto;
 }
 
-.card {
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Custom utility classes */
+.text-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--primary-color) 0%,
+    var(--info-color) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+.bg-gradient {
+  background: linear-gradient(
+    90deg,
+    var(--primary-color) 0%,
+    var(--info-color) 100%
+  );
+}
+
+/* Custom component styles */
+.crypto-card {
+  transition: all var(--transition-speed) ease;
+  border-left: 4px solid transparent;
+}
+
+.crypto-card:hover {
+  border-left-color: var(--primary-color);
+}
+
+.crypto-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--bg-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.price-up {
+  color: var(--success-color);
+}
+
+.price-down {
+  color: var(--danger-color);
 }
 
 /* Navbar styling */
@@ -62,5 +100,24 @@
 @media (max-width: 768px) {
   .display-4 {
     font-size: 2.5rem;
+  }
+
+  .crypto-icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 576px) {
+  .display-4 {
+    font-size: 2rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
   }
 }

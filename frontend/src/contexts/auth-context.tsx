@@ -30,13 +30,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (storedUser) {
       try {
         setUser(JSON.parse(storedUser));
-      } catch (_) {
+      } catch {
         localStorage.removeItem("user");
       }
     }
     setLoading(false);
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const login = async (email: string, _password: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
@@ -57,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("user", JSON.stringify(mockUser));
       setLoading(false);
       return true;
-    } catch (_error) {
+    } catch {
       setError("Login failed. Please check your credentials.");
       setLoading(false);
       return false;
@@ -67,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signup = async (
     name: string,
     email: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _password: string
   ): Promise<boolean> => {
     setLoading(true);
@@ -88,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem("user", JSON.stringify(mockUser));
       setLoading(false);
       return true;
-    } catch (_error) {
+    } catch {
       setError("Signup failed. Please try again.");
       setLoading(false);
       return false;
