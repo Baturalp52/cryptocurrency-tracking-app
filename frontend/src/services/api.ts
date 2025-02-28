@@ -1,4 +1,6 @@
 import axios from "axios";
+import { getCookie, removeCookie } from "@/utils/cookies";
+import { TOKEN_COOKIE_NAME } from "@/utils/constants";
 
 // Create a base axios instance with default config
 const api = axios.create({
@@ -13,9 +15,9 @@ const api = axios.create({
 // Request interceptor for adding auth token
 api.interceptors.request.use(
   (config) => {
-    // Get token from localStorage if it exists
+    // Get token from cookies if it exists
     const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+      typeof window !== "undefined" ? getCookie(TOKEN_COOKIE_NAME) : null;
 
     // If token exists, add it to the request headers
     if (token) {
@@ -35,10 +37,9 @@ api.interceptors.response.use(
   (error) => {
     // Handle 401 Unauthorized errors (token expired or invalid)
     if (error.response && error.response.status === 401) {
-      // Clear user data from localStorage
+      // Clear user data from cookies
       if (typeof window !== "undefined") {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        removeCookie(TOKEN_COOKIE_NAME);
 
         // Redirect to login page if not already there
         if (window.location.pathname !== "/auth/login") {

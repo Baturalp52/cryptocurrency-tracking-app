@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as authService from "@/services/auth";
 import { User } from "@/services/auth/types";
+import { setCookie, getCookie, removeCookie } from "@/utils/cookies";
+import { TOKEN_COOKIE_NAME, COOKIE_EXPIRATION_DAYS } from "@/utils/constants";
 
 interface AuthContextType {
   user: User | null;
@@ -14,9 +16,13 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+type AuthProviderProps = {
+  children: React.ReactNode;
+  initialUser: User | null;
+};
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+export function AuthProvider({ children, initialUser }: AuthProviderProps) {
+  const [user, setUser] = useState<User | null>(initialUser);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,14 +32,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(currentUserResponse.user);
     };
 
-    // Check if user is logged in from localStorage
-    const token = localStorage.getItem("token");
+    // Check if user is logged in from cookies
+    const token = getCookie(TOKEN_COOKIE_NAME);
 
     if (token) {
       try {
         fetchUser();
       } catch {
-        localStorage.removeItem("token");
+        removeCookie(TOKEN_COOKIE_NAME);
       }
     }
 
@@ -47,8 +53,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const response = await authService.login({ email, password });
 
-      // Save token to localStorage
-      localStorage.setItem("token", response.token);
+      // Save token to cookie
+      setCookie(TOKEN_COOKIE_NAME, response.token, COOKIE_EXPIRATION_DAYS);
 
       setUser(response.user);
       setLoading(false);
@@ -92,8 +98,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password_confirmation: password,
       });
 
-      // Save token to localStorage
-      localStorage.setItem("token", response.token);
+      // Save token to cookie
+      setCookie(TOKEN_COOKIE_NAME, response.token, COOKIE_EXPIRATION_DAYS);
 
       setUser(response.user);
       setLoading(false);
@@ -131,7 +137,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       // Clear user data regardless of API success
       setUser(null);
-      localStorage.removeItem("token");
+      removeCookie(TOKEN_COOKIE_NAME);
       setLoading(false);
     }
   };

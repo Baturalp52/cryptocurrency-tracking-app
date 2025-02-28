@@ -7,6 +7,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
+import { getServerUser } from "@/services/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +24,12 @@ export const metadata: Metadata = {
   description: "Track your favorite cryptocurrencies in real-time",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getServerUser();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -64,7 +66,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} d-flex flex-column min-vh-100`}
       >
-        <AuthProvider>
+        <AuthProvider initialUser={user?.user ?? null}>
           <ThemeProvider>
             <Navbar />
             <main className="py-4 flex-grow-1">{children}</main>
