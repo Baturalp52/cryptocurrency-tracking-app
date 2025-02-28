@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Api\CryptocurrencyController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
@@ -21,11 +22,20 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 
+// Public cryptocurrency routes
+Route::get('/cryptocurrency/top', [CryptocurrencyController::class, 'getTopCryptocurrencies']);
+
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     // User routes
     Route::get('/user', [LoginController::class, 'user']);
     Route::post('/logout', [LoginController::class, 'logout']);
+    
+    // Protected cryptocurrency routes
+    Route::prefix('cryptocurrency')->group(function () {
+        Route::get('/search', [CryptocurrencyController::class, 'searchCryptocurrencies']);
+        Route::get('/{symbol}', [CryptocurrencyController::class, 'getCryptocurrency']);
+    });
     
     // Admin routes - protected by both auth:sanctum and role:admin middleware
     Route::prefix('admin')
