@@ -3,6 +3,7 @@
 import { useAuth } from "@/contexts/auth-context";
 import { ChartLine, CircleCheck, Wallet } from "lucide-react";
 import Link from "next/link";
+import TopCryptoCard from "@/components/top-crypto-card";
 
 export default function Home() {
   const { user } = useAuth();
@@ -47,30 +48,39 @@ export default function Home() {
           )}
 
           <div className="row mt-4 gy-4">
-            <div className="col-12 col-sm-6 col-lg-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body text-center text-sm-start p-4">
-                  <div className="d-inline-block bg-primary bg-opacity-10 p-3 rounded-circle mb-3">
-                    <ChartLine className="w-10 h-10 text-primary" />
-                  </div>
-                  <h3 className="card-title h4 mb-3">Real-time Data</h3>
-                  <p className="card-text">
-                    Get the latest cryptocurrency prices and market data.
-                  </p>
-                </div>
-              </div>
+            {/* Top Cryptocurrencies Card */}
+            <div className="col-12 col-lg-6 mb-4">
+              <TopCryptoCard />
             </div>
 
-            <div className="col-12 col-sm-6 col-lg-4">
-              <div className="card h-100 shadow-sm">
-                <div className="card-body text-center text-sm-start p-4">
-                  <div className="d-inline-block bg-success bg-opacity-10 p-3 rounded-circle mb-3">
-                    <Wallet className="w-10 h-10 text-success" />
+            <div className="col-12 col-lg-6">
+              <div className="row gy-4">
+                <div className="col-12 col-sm-6">
+                  <div className="card h-100 shadow-sm">
+                    <div className="card-body text-center text-sm-start p-4">
+                      <div className="d-inline-block bg-primary bg-opacity-10 p-3 rounded-circle mb-3">
+                        <ChartLine className="w-10 h-10 text-primary" />
+                      </div>
+                      <h3 className="card-title h4 mb-3">Real-time Data</h3>
+                      <p className="card-text">
+                        Get the latest cryptocurrency prices and market data.
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="card-title h4 mb-3">Portfolio Tracking</h3>
-                  <p className="card-text">
-                    Create your cryptocurrency investments.
-                  </p>
+                </div>
+
+                <div className="col-12 col-sm-6">
+                  <div className="card h-100 shadow-sm">
+                    <div className="card-body text-center text-sm-start p-4">
+                      <div className="d-inline-block bg-success bg-opacity-10 p-3 rounded-circle mb-3">
+                        <Wallet className="w-10 h-10 text-success" />
+                      </div>
+                      <h3 className="card-title h4 mb-3">Portfolio Tracking</h3>
+                      <p className="card-text">
+                        Create your cryptocurrency investments.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

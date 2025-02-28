@@ -1,5 +1,10 @@
 import api from "../api";
-import { LoginCredentials, SignupData, AuthResponse, User } from "./types";
+import {
+  LoginCredentials,
+  SignupData,
+  AuthResponse,
+  CurrentUserResponse,
+} from "./types";
 /**
  * Login a user with email and password
  */
@@ -21,8 +26,8 @@ export const signup = async (userData: SignupData): Promise<AuthResponse> => {
 /**
  * Get the current authenticated user
  */
-export const getCurrentUser = async (): Promise<User> => {
-  const response = await api.get<User>("/user");
+export const getCurrentUser = async (): Promise<CurrentUserResponse> => {
+  const response = await api.get<CurrentUserResponse>("/user");
   return response.data;
 };
 

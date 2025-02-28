@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import * as authService from "@/services/auth";
-import { User } from "@/services/auth";
+import { User } from "@/services/auth/types";
 
 interface AuthContextType {
   user: User | null;
@@ -21,30 +21,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchUser = async () => {
+      const currentUserResponse = await authService.getCurrentUser();
+      setUser(currentUserResponse.user);
+    };
+
     // Check if user is logged in from localStorage
-    const storedUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
 
-    if (storedUser && token) {
+    if (token) {
       try {
-        setUser(JSON.parse(storedUser));
-
-        // Verify token is valid by fetching current user
-        const verifyToken = async () => {
-          try {
-            const currentUser = await authService.getCurrentUser();
-            setUser(currentUser);
-          } catch {
-            // Token is invalid, clear localStorage
-            localStorage.removeItem("user");
-            localStorage.removeItem("token");
-            setUser(null);
-          }
-        };
-
-        verifyToken();
+        fetchUser();
       } catch {
-        localStorage.removeItem("user");
         localStorage.removeItem("token");
       }
     }
@@ -59,8 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const response = await authService.login({ email, password });
 
-      // Save user and token to localStorage
-      localStorage.setItem("user", JSON.stringify(response.user));
+      // Save token to localStorage
       localStorage.setItem("token", response.token);
 
       setUser(response.user);
@@ -105,8 +92,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password_confirmation: password,
       });
 
-      // Save user and token to localStorage
-      localStorage.setItem("user", JSON.stringify(response.user));
+      // Save token to localStorage
       localStorage.setItem("token", response.token);
 
       setUser(response.user);
@@ -145,7 +131,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       // Clear user data regardless of API success
       setUser(null);
-      localStorage.removeItem("user");
       localStorage.removeItem("token");
       setLoading(false);
     }

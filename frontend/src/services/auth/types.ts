@@ -1,23 +1,36 @@
-export interface User {
+import UserRole from "@/enums/user-role";
+
+interface CurrentUserResponse {
+  user: User;
+}
+interface User {
   id: string;
   name: string;
   email: string;
-  role?: string;
+  role: UserRole;
 }
 
-export interface AuthResponse {
+interface AuthResponse {
   user: User;
   token: string;
 }
 
-export interface LoginCredentials {
+interface LoginCredentials {
   email: string;
   password: string;
 }
 
-export interface SignupData {
+interface SignupData {
   name: string;
   email: string;
   password: string;
   password_confirmation: string;
 }
+
+export type {
+  CurrentUserResponse,
+  User,
+  AuthResponse,
+  LoginCredentials,
+  SignupData,
+};

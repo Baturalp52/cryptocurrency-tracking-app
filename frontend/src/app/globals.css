@@ -109,6 +109,13 @@ h3,
   height: 1rem !important;
 }
 
+.w-4 {
+  width: 2rem !important;
+}
+
+.h-4 {
+  height: 2rem !important;
+}
 /* Spacing utilities */
 .py-4 {
   padding-top: 1.5rem !important;
@@ -222,6 +229,14 @@ h3,
   .sm\:h-2 {
     height: 1rem !important;
   }
+
+  .sm\:w-4 {
+    width: 2rem !important;
+  }
+
+  .sm\:h-4 {
+    height: 2rem !important;
+  }
 }
 
 /* Medium devices (768px and up) */
@@ -257,6 +272,14 @@ h3,
   .md\:h-2 {
     height: 1.5rem !important;
   }
+
+  .md\:w-4 {
+    width: 2.5rem !important;
+  }
+
+  .md\:h-4 {
+    height: 2.5rem !important;
+  }
 }
 
 /* Large devices (992px and up) */
@@ -288,6 +311,14 @@ h3,
   .lg\:h-2 {
     height: 2rem !important;
   }
+
+  .lg\:w-4 {
+    width: 3rem !important;
+  }
+
+  .lg\:h-4 {
+    height: 3rem !important;
+  }
 }
 
 /* Extra large devices (1200px and up) */
@@ -307,6 +338,14 @@ h3,
 
   .xl\:h-2 {
     height: 2.5rem !important;
+  }
+
+  .xl\:w-4 {
+    width: 3.5rem !important;
+  }
+
+  .xl\:h-4 {
+    height: 3.5rem !important;
   }
 }
 
