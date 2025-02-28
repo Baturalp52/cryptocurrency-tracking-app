@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -92,5 +93,45 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    /**
+     * Get the watchlists for the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function watchlists(): HasMany
+    {
+        return $this->hasMany(Watchlist::class);
+    }
+
+    /**
+     * Get the default favorites watchlist for the user.
+     * Creates one if it doesn't exist.
+     *
+     * @return \App\Models\Watchlist
+     */
+    public function favorites(): Watchlist
+    {
+        $favorites = $this->watchlists()->where('is_default', true)->first();
+        
+        if (!$favorites) {
+            // Check if any other watchlist is marked as default
+            $existingDefault = $this->watchlists()->where('is_default', true)->exists();
+            
+            if ($existingDefault) {
+                // This shouldn't happen, but just in case, return the existing default
+                return $this->watchlists()->where('is_default', true)->first();
+            }
+            
+            // Create a new default favorites watchlist
+            $favorites = $this->watchlists()->create([
+                'name' => 'Favorites',
+                'is_default' => true,
+                'description' => 'Your favorite cryptocurrencies'
+            ]);
+        }
+        
+        return $favorites;
     }
 }

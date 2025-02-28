@@ -144,6 +144,32 @@ created_at: timestamp
 updated_at: timestamp
 ```
 
+### Watchlists Table
+
+```
+id: integer (primary key)
+user_id: integer (foreign key to users.id)
+name: string
+is_default: boolean (default: false)
+description: text (nullable)
+created_at: timestamp
+updated_at: timestamp
+```
+
+### Watchlist Cryptocurrencies Table
+
+```
+id: integer (primary key)
+watchlist_id: integer (foreign key to watchlists.id)
+symbol: string
+name: string
+cmc_id: integer (nullable) - CoinMarketCap ID for direct API reference
+added_at: timestamp
+notes: text (nullable)
+created_at: timestamp
+updated_at: timestamp
+```
+
 Additional tables for cryptocurrency data will be implemented as the project progresses.
 
 ## Implementation Details

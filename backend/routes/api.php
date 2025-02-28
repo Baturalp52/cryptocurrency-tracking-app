@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Api\CryptocurrencyController;
+use App\Http\Controllers\Api\WatchlistController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Http\Request;
@@ -35,6 +36,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('cryptocurrency')->group(function () {
         Route::get('/search', [CryptocurrencyController::class, 'searchCryptocurrencies']);
         Route::get('/{symbol}', [CryptocurrencyController::class, 'getCryptocurrency']);
+    });
+    
+    // Watchlist routes
+    Route::prefix('watchlists')->group(function () {
+        Route::get('/', [WatchlistController::class, 'index']);
+        Route::post('/', [WatchlistController::class, 'store']);
+        Route::get('/favorites', [WatchlistController::class, 'favorites']);
+        Route::get('/{id}', [WatchlistController::class, 'show']);
+        Route::put('/{id}', [WatchlistController::class, 'update']);
+        Route::delete('/{id}', [WatchlistController::class, 'destroy']);
+        
+        // Watchlist cryptocurrency routes
+        Route::prefix('{id}/cryptocurrencies')->group(function () {
+            Route::post('/', [WatchlistController::class, 'addCryptocurrency']);
+            Route::delete('/{symbol}', [WatchlistController::class, 'removeCryptocurrency']);
+            Route::put('/{symbol}/notes', [WatchlistController::class, 'updateCryptocurrencyNotes']);
+        });
     });
     
     // Admin routes - protected by both auth:sanctum and role:admin middleware
