@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
 class CoinMarketCapService
@@ -55,16 +54,16 @@ class CoinMarketCapService
     /**
      * Get single cryptocurrency data by symbol
      *
-     * @param string $symbol Cryptocurrency symbol (e.g. BTC)
+     * @param int $id Cryptocurrency id
      * @param string $convert Currency to convert prices to
      * @return array|null
      */
-    public function getCryptocurrency($symbol, $convert = 'USD')
+    public function getCryptocurrency($id, $convert = 'USD')
     {
         try {
             $response = Http::withHeaders($this->defaultHeaders)
-                ->get($this->baseUrl . '/v1/cryptocurrency/quotes/latest', [
-                    'symbol' => $symbol,
+                ->get($this->baseUrl . '/v2/cryptocurrency/quotes/latest', [
+                    'id' => $id,
                     'convert' => $convert,
                 ]);
 
@@ -73,27 +72,27 @@ class CoinMarketCapService
                 
                 // Also fetch metadata to get more details
                 $metadataResponse = Http::withHeaders($this->defaultHeaders)
-                    ->get($this->baseUrl . '/v1/cryptocurrency/info', [
-                        'symbol' => $symbol,
+                    ->get($this->baseUrl . '/v2/cryptocurrency/info', [
+                        'id' => $id,
                     ]);
                 
                 if ($metadataResponse->successful()) {
                     $metadata = $metadataResponse->json();
                     
                     // Merge the metadata with the quote data
-                    if (isset($data['data'][$symbol]) && isset($metadata['data'][$symbol])) {
-                        $data['data'][$symbol] = array_merge(
-                            $data['data'][$symbol],
+                    if (isset($data['data'][$id]) && isset($metadata['data'][$id])) {
+                        $data['data'][$id] = array_merge(
+                            $data['data'][$id],
                             [
-                                'logo' => $metadata['data'][$symbol]['logo'] ?? null,
-                                'description' => $metadata['data'][$symbol]['description'] ?? null,
-                                'urls' => $metadata['data'][$symbol]['urls'] ?? null,
+                                'logo' => $metadata['data'][$id]['logo'] ?? null,
+                                'description' => $metadata['data'][$id]['description'] ?? null,
+                                'urls' => $metadata['data'][$id]['urls'] ?? null,
                             ]
                         );
                     }
                 }
-                
-                return $data;
+
+                return ["data" => $data['data'][$id] ];
             }
 
             Log::error('CoinMarketCap API error: ' . $response->body());

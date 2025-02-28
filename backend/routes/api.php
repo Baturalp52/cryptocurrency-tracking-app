@@ -24,7 +24,7 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 
 // Public cryptocurrency routes
-Route::get('/cryptocurrency/top', [CryptocurrencyController::class, 'getTopCryptocurrencies']);
+Route::get('/cryptocurrencies/top', [CryptocurrencyController::class, 'getTopCryptocurrencies']);
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -33,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout']);
     
     // Protected cryptocurrency routes
-    Route::prefix('cryptocurrency')->group(function () {
+    Route::prefix('cryptocurrencies')->group(function () {
         Route::get('/search', [CryptocurrencyController::class, 'searchCryptocurrencies']);
         Route::get('/{symbol}', [CryptocurrencyController::class, 'getCryptocurrency']);
     });

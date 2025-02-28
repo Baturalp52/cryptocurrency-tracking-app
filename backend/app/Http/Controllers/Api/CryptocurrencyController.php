@@ -39,14 +39,14 @@ class CryptocurrencyController extends Controller
      * Get single cryptocurrency data by symbol
      *
      * @param Request $request
-     * @param string $symbol
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getCryptocurrency(Request $request, $symbol)
+    public function getCryptocurrency(Request $request, $id)
     {
         $convert = $request->input('convert', 'USD');
 
-        $data = $this->coinMarketCapService->getCryptocurrency($symbol, $convert);
+        $data = $this->coinMarketCapService->getCryptocurrency($id, $convert);
 
         if ($data === null) {
             return response()->json(['error' => 'Failed to fetch cryptocurrency data'], 500);
