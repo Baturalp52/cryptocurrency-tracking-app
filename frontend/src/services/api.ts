@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getCookie, removeCookie } from "@/utils/cookies";
 import { TOKEN_COOKIE_NAME } from "@/utils/constants";
-import { deleteCookieServer, getCookieServer } from "@/utils/cookies-server";
+import { getCookieServer } from "@/utils/cookies-server";
 
 // Create a base axios instance with default config
 const api = axios.create({
@@ -45,14 +45,22 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // Clear user data from cookies
       if (typeof window !== "undefined") {
-        removeCookie(TOKEN_COOKIE_NAME);
+        const token = getCookie(TOKEN_COOKIE_NAME);
+        if (token) {
+          removeCookie(TOKEN_COOKIE_NAME);
 
-        // Redirect to login page if not already there
-        if (window.location.pathname !== "/auth/login") {
-          window.location.href = "/auth/login";
+          // Redirect to login page if not already there
+          if (window.location.pathname !== "/auth/login") {
+            window.location.href = "/auth/login";
+          }
         }
       } else {
-        await deleteCookieServer(TOKEN_COOKIE_NAME);
+        await fetch("http://localhost:3000/api/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
       }
     }
 
