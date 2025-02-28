@@ -5,6 +5,15 @@ import { useAuth } from "@/contexts/auth-context";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
+// Define navigation links as constants
+const NAV_LINKS = [{ href: "/", label: "Home" }];
+
+// Define auth links as constants
+const AUTH_LINKS = [
+  { href: "/auth/login", label: "Login" },
+  { href: "/auth/signup", label: "Sign Up" },
+];
+
 export default function Navbar() {
   const { user, loading, logout } = useAuth();
   const pathname = usePathname();
@@ -24,6 +33,9 @@ export default function Navbar() {
       document.body.removeEventListener("click", handleClick);
     };
   }, [pathname]);
+
+  // Define user-specific links
+  const USER_LINKS = [{ href: "/watchlist", label: "Watchlist" }];
 
   return (
     <nav className="navbar navbar-expand-lg sticky-top">
@@ -46,26 +58,31 @@ export default function Navbar() {
 
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item">
-              <Link
-                href="/"
-                className={`nav-link ${pathname === "/" ? "active" : ""}`}
-              >
-                Home
-              </Link>
-            </li>
-            {user && (
-              <li className="nav-item">
+            {NAV_LINKS.map((link) => (
+              <li className="nav-item" key={link.href}>
                 <Link
-                  href="/watchlist"
+                  href={link.href}
                   className={`nav-link ${
-                    pathname === "/watchlist" ? "active" : ""
+                    pathname === link.href ? "active" : ""
                   }`}
                 >
-                  Watchlist
+                  {link.label}
                 </Link>
               </li>
-            )}
+            ))}
+            {user &&
+              USER_LINKS.map((link) => (
+                <li className="nav-item" key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`nav-link ${
+                      pathname === link.href ? "active" : ""
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
           </ul>
 
           <div className="d-flex flex-column flex-lg-row align-items-start align-items-lg-center gap-2">
@@ -85,26 +102,23 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link
-                  href="/auth/login"
-                  className={`btn ${
-                    pathname === "/auth/login"
-                      ? "btn-primary"
-                      : "btn-outline-primary"
-                  } mb-2 mb-lg-0 w-100 w-md-auto`}
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/auth/signup"
-                  className={`btn ${
-                    pathname === "/auth/signup"
-                      ? "btn-primary"
-                      : "btn-outline-primary"
-                  } w-100 w-md-auto mb-lg-0 mb-2 text-nowrap`}
-                >
-                  Sign Up
-                </Link>
+                {AUTH_LINKS.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`btn ${
+                      pathname === link.href
+                        ? "btn-primary"
+                        : "btn-outline-primary"
+                    } ${
+                      link.href === "/auth/login"
+                        ? "mb-2 mb-lg-0 w-100 w-md-auto"
+                        : "w-100 w-md-auto mb-lg-0 mb-2 text-nowrap"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
               </>
             )}
           </div>
