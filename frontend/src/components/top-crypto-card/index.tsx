@@ -26,30 +26,34 @@ export default function TopCryptoCard({ topCryptos }: TopCryptoCardProps) {
           </div>
         ) : (
           <>
-            <div className="table-responsive">
-              <table className="table table-hover mb-0">
-                <thead>
-                  <tr>
-                    <th scope="col" className="">
-                      Name
-                    </th>
-                    <th scope="col" className="text-end">
-                      Price
-                    </th>
-                    <th scope="col" className="text-end">
-                      24h %
-                    </th>
-                    <th scope="col" className="text-end text-nowrap">
-                      Market Cap
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {topCryptos.map((crypto) => (
-                    <TableRow key={crypto.id} crypto={crypto} />
-                  ))}
-                </tbody>
-              </table>
+            <div className="table-responsive position-relative">
+              <div className="table-container">
+                <div className="table-scroll">
+                  <table className="table table-hover mb-0">
+                    <thead>
+                      <tr>
+                        <th scope="col" className="sticky-column">
+                          Name
+                        </th>
+                        <th scope="col" className="text-end">
+                          Price
+                        </th>
+                        <th scope="col" className="text-end">
+                          24h %
+                        </th>
+                        <th scope="col" className="text-end text-nowrap">
+                          Market Cap
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {topCryptos.map((crypto) => (
+                        <TableRow key={crypto.id} crypto={crypto} />
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </>
         )}

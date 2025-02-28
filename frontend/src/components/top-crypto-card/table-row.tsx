@@ -2,15 +2,21 @@ import Image from "next/image";
 import { CryptocurrencyData } from "@/services/cryptocurrency";
 import { formatMarketCap, formatPrice, getSymbolImage } from "./utils";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type TableRowProps = {
   crypto: CryptocurrencyData;
 };
 
 export default function TableRow({ crypto }: TableRowProps) {
+  const router = useRouter();
+
   return (
-    <tr>
-      <td className="ps-3">
+    <tr
+      role="button"
+      onClick={() => router.push(`/cryptocurrencies/${crypto.id}`)}
+    >
+      <td className="ps-3 sticky-column">
         <div className="d-flex align-items-center">
           <div className="me-2 bg-light rounded-circle text-center w-4 h-4">
             <Image

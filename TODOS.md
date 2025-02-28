@@ -35,9 +35,8 @@
 
 ## Admin Panel
 
-- [ ] Implement cryptocurrency management (add/remove/edit)
+- [ ] Implement cryptocurrency management (blacklist)
 - [ ] Create user management interface
-- [ ] Implement settings for display preferences
 - [x] Set up Laravel authorization using Gates and Policies
 
 ## Data Visualization

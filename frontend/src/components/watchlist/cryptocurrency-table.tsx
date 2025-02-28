@@ -65,8 +65,7 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
       <table className="table table-hover">
         <thead>
           <tr>
-            <th>Symbol</th>
-            <th>Name</th>
+            <th className="sticky-column">Name</th>
             <th>Notes</th>
             <th>Actions</th>
           </tr>
@@ -78,19 +77,23 @@ const CryptocurrencyTable: React.FC<CryptocurrencyTableProps> = ({
               role="button"
               onClick={() => handleCryptoClick(crypto)}
             >
-              <td className="align-middle">
-                <div className="d-flex align-items-center gap-2">
-                  <Image
-                    src={getSymbolImage(crypto.cmc_id || 0)}
-                    alt={crypto.symbol}
-                    width={24}
-                    height={24}
-                    className="me-2"
-                  />
-                  <strong>{crypto.symbol}</strong>
+              <td className="align-middle sticky-column">
+                <div className="d-flex align-items-center">
+                  <div className="me-2 bg-light rounded-circle text-center w-4 h-4">
+                    <Image
+                      src={getSymbolImage(crypto.cmc_id || 0)}
+                      width={64}
+                      height={64}
+                      alt={crypto.symbol}
+                      className="w-100 h-100"
+                    />
+                  </div>
+                  <div className="d-flex flex-column align-items-start">
+                    <div className="fw-medium text-nowrap">{crypto.name}</div>
+                    <small className="text-muted">{crypto.symbol}</small>
+                  </div>
                 </div>
               </td>
-              <td className="align-middle">{crypto.name}</td>
               <td className="align-middle" style={{ minWidth: "200px" }}>
                 {editingSymbol === crypto.symbol ? (
                   <div className="d-flex gap-2">

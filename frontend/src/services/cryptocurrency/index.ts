@@ -1,5 +1,8 @@
 import api from "../api";
-import { TopCryptocurrenciesResponse } from "./interface";
+import {
+  TopCryptocurrenciesResponse,
+  CryptocurrencyDetailResponse,
+} from "./interface";
 
 /**
  * Fetch top cryptocurrencies
@@ -11,11 +14,30 @@ export const getTopCryptocurrencies = async (
 ): Promise<TopCryptocurrenciesResponse> => {
   try {
     const response = await api.get<TopCryptocurrenciesResponse>(
-      `/cryptocurrency/top?limit=${limit}`
+      `/cryptocurrencies/top?limit=${limit}`
     );
     return response.data;
   } catch (error) {
     console.error("Error fetching top cryptocurrencies:", error);
+    throw error;
+  }
+};
+
+/**
+ * Fetch detailed information for a specific cryptocurrency
+ * @param id CoinMarketCap ID of the cryptocurrency
+ * @returns Promise with detailed cryptocurrency data
+ */
+export const getCryptocurrencyDetail = async (
+  id: number
+): Promise<CryptocurrencyDetailResponse> => {
+  try {
+    const response = await api.get<CryptocurrencyDetailResponse>(
+      `/cryptocurrencies/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching cryptocurrency details for ID ${id}:`, error);
     throw error;
   }
 };
