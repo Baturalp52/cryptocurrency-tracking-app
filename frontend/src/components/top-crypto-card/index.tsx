@@ -1,41 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { CryptocurrencyData } from "@/services/cryptocurrency/interface";
-import { getTopCryptocurrencies } from "@/services/cryptocurrency";
-import { TrendingUp, Loader2 } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
 import TableRow from "./table-row";
 
-export default function TopCryptoCard() {
-  const [topCryptos, setTopCryptos] = useState<CryptocurrencyData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+type TopCryptoCardProps = {
+  topCryptos: CryptocurrencyData[];
+};
+
+export default function TopCryptoCard({ topCryptos }: TopCryptoCardProps) {
   const { user } = useAuth();
-
-  useEffect(() => {
-    const fetchTopCryptos = async () => {
-      try {
-        setLoading(true);
-        const response = await getTopCryptocurrencies(5); // Get top 5 cryptocurrencies
-        setTopCryptos(response.data);
-        setError(null);
-      } catch (err) {
-        setError("Failed to fetch top cryptocurrencies");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTopCryptos();
-
-    // Refresh data every 60 seconds
-    const intervalId = setInterval(fetchTopCryptos, 60000);
-
-    return () => clearInterval(intervalId);
-  }, []);
 
   return (
     <div className="card h-100 shadow-sm">
@@ -44,16 +20,7 @@ export default function TopCryptoCard() {
         <h5 className="card-title mb-0">Top Cryptocurrencies</h5>
       </div>
       <div className="card-body p-0">
-        {loading ? (
-          <div className="d-flex justify-content-center align-items-center p-5">
-            <Loader2 className="animate-spin text-primary me-2" size={24} />
-            <span>Loading cryptocurrency data...</span>
-          </div>
-        ) : error ? (
-          <div className="alert alert-danger m-3" role="alert">
-            {error}
-          </div>
-        ) : topCryptos.length === 0 ? (
+        {topCryptos.length === 0 ? (
           <div className="alert alert-info m-3" role="alert">
             No cryptocurrency data available at the moment.
           </div>
@@ -87,7 +54,7 @@ export default function TopCryptoCard() {
           </>
         )}
       </div>
-      {!loading && !error && topCryptos.length > 0 && (
+      {topCryptos.length > 0 && (
         <div className="card-footer text-center">
           {user ? (
             <Link

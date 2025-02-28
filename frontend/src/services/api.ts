@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getCookie, removeCookie } from "@/utils/cookies";
 import { TOKEN_COOKIE_NAME } from "@/utils/constants";
+import { deleteCookieServer, getCookieServer } from "@/utils/cookies-server";
 
 // Create a base axios instance with default config
 const api = axios.create({
@@ -14,10 +15,15 @@ const api = axios.create({
 
 // Request interceptor for adding auth token
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // Get token from cookies if it exists
-    const token =
-      typeof window !== "undefined" ? getCookie(TOKEN_COOKIE_NAME) : null;
+    let token;
+
+    if (typeof window !== "undefined") {
+      token = getCookie(TOKEN_COOKIE_NAME);
+    } else {
+      token = await getCookieServer(TOKEN_COOKIE_NAME);
+    }
 
     // If token exists, add it to the request headers
     if (token) {
@@ -34,7 +40,7 @@ api.interceptors.request.use(
 // Response interceptor for handling common errors
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     // Handle 401 Unauthorized errors (token expired or invalid)
     if (error.response && error.response.status === 401) {
       // Clear user data from cookies
@@ -45,6 +51,8 @@ api.interceptors.response.use(
         if (window.location.pathname !== "/auth/login") {
           window.location.href = "/auth/login";
         }
+      } else {
+        await deleteCookieServer(TOKEN_COOKIE_NAME);
       }
     }
 

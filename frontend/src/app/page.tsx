@@ -1,12 +1,11 @@
-"use client";
+"use server";
 
-import { useAuth } from "@/contexts/auth-context";
-import { ChartLine, CircleCheck, Wallet } from "lucide-react";
-import Link from "next/link";
+import { ChartLine, Wallet } from "lucide-react";
 import TopCryptoCard from "@/components/top-crypto-card";
+import { getTopCryptocurrencies } from "@/services/cryptocurrency";
 
-export default function Home() {
-  const { user } = useAuth();
+export default async function Home() {
+  const topCryptos = await getTopCryptocurrencies(5);
 
   return (
     <div className="container">
@@ -17,40 +16,10 @@ export default function Home() {
             Track your favorite cryptocurrencies in real-time
           </p>
 
-          {user ? (
-            <div className="alert alert-success mb-4" role="alert">
-              <div className="d-flex align-items-center">
-                <div className="me-3">
-                  <CircleCheck className="w-10 h-10 text-success" />
-                </div>
-                <div>
-                  Welcome back, <strong>{user.name}</strong>! You are logged in.
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="mb-4">
-              <div className="d-grid gap-2 d-sm-flex justify-content-sm-center mb-4">
-                <Link
-                  href="/auth/login"
-                  className="btn btn-primary btn-lg px-4 me-sm-3"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/auth/signup"
-                  className="btn btn-outline-primary btn-lg px-4"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            </div>
-          )}
-
           <div className="row mt-4 gy-4">
             {/* Top Cryptocurrencies Card */}
             <div className="col-12 col-lg-6 mb-4">
-              <TopCryptoCard />
+              <TopCryptoCard topCryptos={topCryptos.data} />
             </div>
 
             <div className="col-12 col-lg-6">

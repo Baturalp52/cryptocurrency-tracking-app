@@ -7,7 +7,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
-import { getServerUser } from "@/services/auth";
+import { getCurrentUser } from "@/services/auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +29,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getServerUser();
+  const user = await getCurrentUser();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>

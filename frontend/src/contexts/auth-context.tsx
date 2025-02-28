@@ -27,23 +27,20 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const currentUserResponse = await authService.getCurrentUser();
-      setUser(currentUserResponse.user);
+    const checkToken = async () => {
+      const token = await getCookie(TOKEN_COOKIE_NAME);
+      if (token) {
+        try {
+          const currentUserResponse = await authService.getCurrentUser();
+          setUser(currentUserResponse.user);
+        } catch {
+          removeCookie(TOKEN_COOKIE_NAME);
+        }
+      }
+      setLoading(false);
     };
 
-    // Check if user is logged in from cookies
-    const token = getCookie(TOKEN_COOKIE_NAME);
-
-    if (token) {
-      try {
-        fetchUser();
-      } catch {
-        removeCookie(TOKEN_COOKIE_NAME);
-      }
-    }
-
-    setLoading(false);
+    checkToken();
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
