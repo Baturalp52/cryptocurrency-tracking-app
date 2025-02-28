@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/contexts/auth-context";
+import { ChartLine, CircleCheck, Wallet } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -9,63 +10,66 @@ export default function Home() {
   return (
     <div className="container">
       <div className="row justify-content-center">
-        <div className="col-md-10 text-center">
-          <h1 className="display-4 fw-bold mb-4">
-            Cryptocurrency Tracking App
-          </h1>
+        <div className="col-12 text-center">
+          <h1 className="display-4 fw-bold mb-3">Crypto Tracker</h1>
+          <p className="lead mb-4">
+            Track your favorite cryptocurrencies in real-time
+          </p>
 
           {user ? (
             <div className="alert alert-success mb-4" role="alert">
-              Welcome back, {user.name}! You are logged in.
+              <div className="d-flex align-items-center">
+                <div className="me-3">
+                  <CircleCheck className="w-10 h-10 text-success" />
+                </div>
+                <div>
+                  Welcome back, <strong>{user.name}</strong>! You are logged in.
+                </div>
+              </div>
             </div>
           ) : (
             <div className="mb-4">
-              <p className="lead">
-                Track your favorite cryptocurrencies in real-time.
-              </p>
-              <div className="mt-4">
-                <Link href="/auth/login" className="btn btn-primary me-2">
+              <div className="d-grid gap-2 d-sm-flex justify-content-sm-center mb-4">
+                <Link
+                  href="/auth/login"
+                  className="btn btn-primary btn-lg px-4 me-sm-3"
+                >
                   Login
                 </Link>
-                <Link href="/auth/signup" className="btn btn-outline-primary">
+                <Link
+                  href="/auth/signup"
+                  className="btn btn-outline-primary btn-lg px-4"
+                >
                   Sign Up
                 </Link>
               </div>
             </div>
           )}
 
-          <div className="row mt-5">
-            <div className="col-md-4 mb-4">
-              <div className="card h-100">
-                <div className="card-body">
-                  <h3 className="card-title">Real-time Data</h3>
+          <div className="row mt-4 gy-4">
+            <div className="col-12 col-sm-6 col-lg-4">
+              <div className="card h-100 shadow-sm">
+                <div className="card-body text-center text-sm-start p-4">
+                  <div className="d-inline-block bg-primary bg-opacity-10 p-3 rounded-circle mb-3">
+                    <ChartLine className="w-10 h-10 text-primary" />
+                  </div>
+                  <h3 className="card-title h4 mb-3">Real-time Data</h3>
                   <p className="card-text">
-                    Get the latest cryptocurrency prices and market data updated
-                    in real-time.
+                    Get the latest cryptocurrency prices and market data.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="col-md-4 mb-4">
-              <div className="card h-100">
-                <div className="card-body">
-                  <h3 className="card-title">Portfolio Tracking</h3>
+            <div className="col-12 col-sm-6 col-lg-4">
+              <div className="card h-100 shadow-sm">
+                <div className="card-body text-center text-sm-start p-4">
+                  <div className="d-inline-block bg-success bg-opacity-10 p-3 rounded-circle mb-3">
+                    <Wallet className="w-10 h-10 text-success" />
+                  </div>
+                  <h3 className="card-title h4 mb-3">Portfolio Tracking</h3>
                   <p className="card-text">
-                    Create your own portfolio and track your cryptocurrency
-                    investments.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4 mb-4">
-              <div className="card h-100">
-                <div className="card-body">
-                  <h3 className="card-title">Price Alerts</h3>
-                  <p className="card-text">
-                    Set up price alerts to be notified when cryptocurrencies
-                    reach your target price.
+                    Create your cryptocurrency investments.
                   </p>
                 </div>
               </div>

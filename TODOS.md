@@ -23,7 +23,7 @@
 
 - [x] Set up Next.js project with TypeScript
 - [x] Configure Bootstrap integration
-- [ ] Create responsive layouts with React components
+- [x] Create responsive layouts with React components
 - [x] Implement API service for communication with Laravel backend
 - [ ] Build cryptocurrency listing page
 - [ ] Create detailed cryptocurrency view with price charts

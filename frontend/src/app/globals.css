@@ -1,6 +1,7 @@
 /* Prevent flash of wrong theme */
 :root {
   color-scheme: light dark;
+  font-size: 16px;
 }
 
 html.theme-initialized {
@@ -21,7 +22,37 @@ html[data-bs-theme="light"] body {
 /* Custom styles for the application */
 @import "./theme.css";
 
-/* Animations */
+/* ===== BASE STYLES (Mobile First) ===== */
+body {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1,
+.h1 {
+  font-size: 1.75rem;
+}
+
+h2,
+.h2 {
+  font-size: 1.5rem;
+}
+
+h3,
+.h3 {
+  font-size: 1.25rem;
+}
+
+.display-4 {
+  font-size: 2rem;
+}
+
+.lead {
+  font-size: 1.1rem;
+}
+
+/* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -37,13 +68,19 @@ html[data-bs-theme="light"] body {
   animation: fadeIn 0.5s ease-in-out;
 }
 
-/* Auth form styling */
+/* ===== LAYOUT & CONTAINERS ===== */
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
 .auth-form-container {
-  max-width: 500px;
+  max-width: 100%;
+  padding: 0 15px;
   margin: 0 auto;
 }
 
-/* Custom utility classes */
+/* ===== UTILITY CLASSES ===== */
 .text-gradient {
   background: linear-gradient(
     90deg,
@@ -63,19 +100,79 @@ html[data-bs-theme="light"] body {
   );
 }
 
-/* Custom component styles */
+/* Width and Height utilities */
+.w-2 {
+  width: 1rem !important;
+}
+
+.h-2 {
+  height: 1rem !important;
+}
+
+/* Spacing utilities */
+.py-4 {
+  padding-top: 1.5rem !important;
+  padding-bottom: 1.5rem !important;
+}
+
+.mt-5 {
+  margin-top: 2rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+/* ===== COMPONENTS ===== */
+/* Buttons */
+.btn {
+  transition: all 0.3s ease;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Forms */
+.form-control {
+  min-height: 44px; /* Better touch targets */
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Navbar */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 0;
+}
+
+.navbar-brand {
+  font-size: 1.25rem;
+}
+
+.nav-link {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* Cards */
+.card {
+  margin-bottom: 20px;
+}
+
 .crypto-card {
   transition: all var(--transition-speed) ease;
   border-left: 4px solid transparent;
 }
 
-.crypto-card:hover {
-  border-left-color: var(--primary-color);
-}
-
 .crypto-icon {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background-color: var(--bg-hover);
   display: flex;
@@ -91,53 +188,140 @@ html[data-bs-theme="light"] body {
   color: var(--danger-color);
 }
 
-/* Navbar styling */
-.navbar {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Button hover effects */
-.btn {
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
-}
-
-.btn-outline-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
-}
-
-/* Form control focus */
-.form-control:focus {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+/* Small devices (576px and up) */
+@media (min-width: 576px) {
   .display-4 {
     font-size: 2.5rem;
   }
 
-  .crypto-icon {
-    width: 24px;
-    height: 24px;
-  }
-}
-
-@media (max-width: 576px) {
-  .display-4 {
+  h1,
+  .h1 {
     font-size: 2rem;
   }
 
-  h1 {
+  h2,
+  .h2 {
     font-size: 1.75rem;
   }
 
-  h2 {
-    font-size: 1.5rem;
+  .lead {
+    font-size: 1.25rem;
+  }
+
+  .btn {
+    padding: 0.375rem 1rem;
+    font-size: 1rem;
+  }
+
+  /* Responsive width and height utilities */
+  .sm\:w-2 {
+    width: 1rem !important;
+  }
+
+  .sm\:h-2 {
+    height: 1rem !important;
+  }
+}
+
+/* Medium devices (768px and up) */
+@media (min-width: 768px) {
+  .auth-form-container {
+    max-width: 500px;
+  }
+
+  .crypto-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .py-4 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .mt-5 {
+    margin-top: 3rem !important;
+  }
+
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* Responsive width and height utilities */
+  .md\:w-2 {
+    width: 1.5rem !important;
+  }
+
+  .md\:h-2 {
+    height: 1.5rem !important;
+  }
+}
+
+/* Large devices (992px and up) */
+@media (min-width: 992px) {
+  .display-4 {
+    font-size: 3rem;
+  }
+
+  h1,
+  .h1 {
+    font-size: 2.5rem;
+  }
+
+  .btn-primary:hover,
+  .btn-outline-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
+  }
+
+  .crypto-card:hover {
+    border-left-color: var(--primary-color);
+  }
+
+  /* Responsive width and height utilities */
+  .lg\:w-2 {
+    width: 2rem !important;
+  }
+
+  .lg\:h-2 {
+    height: 2rem !important;
+  }
+}
+
+/* Extra large devices (1200px and up) */
+@media (min-width: 1200px) {
+  .display-4 {
+    font-size: 3.5rem;
+  }
+
+  .container {
+    max-width: 1140px;
+  }
+
+  /* Responsive width and height utilities */
+  .xl\:w-2 {
+    width: 2.5rem !important;
+  }
+
+  .xl\:h-2 {
+    height: 2.5rem !important;
+  }
+}
+
+/* XXL devices (1400px and up) */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+
+  /* Responsive width and height utilities */
+  .xxl\:w-2 {
+    width: 3rem !important;
+  }
+
+  .xxl\:h-2 {
+    height: 3rem !important;
   }
 }
