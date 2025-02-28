@@ -30,7 +30,7 @@
 - [ ] Implement interactive price charts using Chart.js
 - [ ] Add search and filter functionality
 - [x] Create user authentication flow
-- [ ] Implement favorites/watchlist feature
+- [x] Implement favorites/watchlist feature
 - [x] Add dark/light mode toggle
 
 ## Admin Panel

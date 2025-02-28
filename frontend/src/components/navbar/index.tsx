@@ -35,7 +35,7 @@ export default function Navbar() {
   }, [pathname]);
 
   // Define user-specific links
-  const USER_LINKS = [{ href: "/watchlist", label: "Watchlist" }];
+  const USER_LINKS = [{ href: "/watchlists", label: "Watchlists" }];
 
   return (
     <nav className="navbar navbar-expand-lg sticky-top">
@@ -90,7 +90,7 @@ export default function Navbar() {
               <span className="navbar-text">Loading...</span>
             ) : user ? (
               <>
-                <span className="navbar-text me-lg-3 mb-2 mb-lg-0">
+                <span className="navbar-text me-lg-3 mb-2 mb-lg-0 text-nowrap">
                   Welcome, {user.name}
                 </span>
                 <button
