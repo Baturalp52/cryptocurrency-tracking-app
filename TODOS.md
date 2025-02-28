@@ -13,37 +13,32 @@
 ## Backend Development (Laravel)
 
 - [x] Try to get the data from the API
-- [ ] Create database migrations for cryptocurrencies, price data, and users
-- [ ] Create Eloquent models with relationships
+- [x] Create database migrations for models
 - [ ] Implement API service to fetch cryptocurrency data from CoinMarketCap
-- [ ] Create data caching mechanism using Laravel's cache system
-- [ ] Implement Laravel authentication for admin panel
+- [x] Implement Laravel authentication for admin panel
 - [ ] Build API controllers and routes
-- [ ] Set up Laravel Scheduler for regular data updates
-- [ ] Implement API authentication with Laravel Sanctum
+- [x] Implement API authentication with Laravel Sanctum
 
 ## Frontend Development (Next.js)
 
 - [x] Set up Next.js project with TypeScript
 - [x] Configure Bootstrap integration
 - [ ] Create responsive layouts with React components
-- [ ] Implement API service for communication with Laravel backend
+- [x] Implement API service for communication with Laravel backend
 - [ ] Build cryptocurrency listing page
 - [ ] Create detailed cryptocurrency view with price charts
 - [ ] Implement interactive price charts using Chart.js
 - [ ] Add search and filter functionality
-- [ ] Create user authentication flow
+- [x] Create user authentication flow
 - [ ] Implement favorites/watchlist feature
 - [x] Add dark/light mode toggle
 
 ## Admin Panel
 
-- [ ] Design admin dashboard layout with Blade templates
 - [ ] Implement cryptocurrency management (add/remove/edit)
 - [ ] Create user management interface
 - [ ] Implement settings for display preferences
-- [ ] Add analytics dashboard for admin
-- [ ] Set up Laravel authorization using Gates and Policies
+- [x] Set up Laravel authorization using Gates and Policies
 
 ## Data Visualization
 
