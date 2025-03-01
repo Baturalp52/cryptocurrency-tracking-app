@@ -29,6 +29,7 @@ Route::prefix('cryptocurrencies')->group(function () {
     Route::get('/trending', [CryptocurrencyController::class, 'trending']);
     Route::get('/search', [CryptocurrencyController::class, 'searchCryptocurrencies']);
     Route::get('/{symbol}', [CryptocurrencyController::class, 'getCryptocurrency']);
+    Route::get('/{id}/historical', [CryptocurrencyController::class, 'getHistoricalData']);
 });
 
 // Protected routes

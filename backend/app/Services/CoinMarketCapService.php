@@ -20,6 +20,8 @@ class CoinMarketCapService
         'marketCap' => 'market_cap'
     ];
 
+    protected $dataService;
+
     public function __construct()
     {
         $this->apiKey = env('CMC_API_KEY');
@@ -27,6 +29,9 @@ class CoinMarketCapService
             'X-CMC_PRO_API_KEY' => $this->apiKey,
             'Accept' => 'application/json',
         ];
+        
+        // Initialize the CryptocurrencyDataService
+        $this->dataService = app(CryptocurrencyDataService::class);
     }
 
     /**
@@ -49,7 +54,16 @@ class CoinMarketCapService
                 ]);
 
             if ($response->successful()) {
-                return $response->json();
+                $data = $response->json();
+                
+                // Store data points for each cryptocurrency
+                if (isset($data['data']) && is_array($data['data'])) {
+                    foreach ($data['data'] as $crypto) {
+                        $this->dataService->storeDataPoint($crypto, $convert);
+                    }
+                }
+                
+                return $data;
             }
 
             Log::error('CoinMarketCap API error: ' . $response->body());
@@ -99,6 +113,11 @@ class CoinMarketCapService
                             ]
                         );
                     }
+                }
+                
+                // Store the data point for historical tracking
+                if (isset($data['data'][$id])) {
+                    $this->dataService->storeDataPoint($data['data'][$id], $convert);
                 }
 
                 return ["data" => $data['data'][$id] ];
@@ -159,6 +178,11 @@ class CoinMarketCapService
                     );
                 });
                 
+                // Store data points for each cryptocurrency in the filtered results
+                foreach ($filteredData as $crypto) {
+                    $this->dataService->storeDataPoint($crypto, $convert);
+                }
+                
                 // Format the data for frontend
                 $formattedData = $this->formatCryptocurrencyData(array_values($filteredData), $convert);
                 
@@ -215,6 +239,13 @@ class CoinMarketCapService
             if ($response->successful()) {
                 $data = $response->json();
                 
+                // Store data points for each cryptocurrency
+                if (isset($data['data']) && is_array($data['data'])) {
+                    foreach ($data['data'] as $crypto) {
+                        $this->dataService->storeDataPoint($crypto, $convert);
+                    }
+                }
+                
                 // Format the data for frontend
                 $formattedData = $this->formatCryptocurrencyData($data['data'], $convert);
                 
@@ -260,4 +291,94 @@ class CoinMarketCapService
             ];
         }, $cryptoData);
     }
+    
+    /**
+     * Get historical price data for a cryptocurrency
+     *
+     * @param int $id Cryptocurrency id
+     * @param string $timeRange Time range (1h, 1d, 7d, 30d, 90d, 365d, all)
+     * @param string $convert Currency to convert prices to
+     * @return array|null
+     */
+    public function getHistoricalData($id, $timeRange = '7d', $convert = 'USD')
+    {
+        try {
+            // First, try to get historical data from our database
+            $storedData = $this->dataService->getHistoricalData($id, $timeRange, $convert);
+            
+            // If we have enough stored data, return it
+            if ($storedData && count($storedData['data']) > 1) {
+             
+                return $storedData;
+            }
+            
+            // Get current price from the API if possible
+            $currentData = $this->getCryptocurrency($id, $convert);
+            $currentPrice = $currentData && isset($currentData['data']['quote'][$convert]['price']) 
+                ? $currentData['data']['quote'][$convert]['price'] 
+                : 30000; // Default price if API fails
+            
+            // Map time range to number of days and data points
+            $timeRangeMap = [
+                '1h' => ['days' => 0.0417, 'points' => 60], // 1 hour with 1 point per minute
+                '1d' => ['days' => 1, 'points' => 24],
+                '7d' => ['days' => 7, 'points' => 168],
+                '30d' => ['days' => 30, 'points' => 180],
+                '90d' => ['days' => 90, 'points' => 180],
+                '365d' => ['days' => 365, 'points' => 365]
+            ];
+            
+            $days = $timeRangeMap[$timeRange]['days'] ?? 7;
+            $points = $timeRangeMap[$timeRange]['points'] ?? 168;
+            
+            // Generate data points
+            $formattedData = [];
+            $volatility = 0.02; // 2% volatility
+            $trend = 0.005; // 0.5% upward trend per day
+            
+            // Start from the current price and work backwards
+            $price = $currentPrice;
+            $now = time();
+            $interval = ($days * 86400) / $points; // seconds per data point
+            
+            for ($i = 0; $i < $points; $i++) {
+                $timestamp = $now - ($i * $interval);
+                
+                // Add some randomness to the price
+                $randomChange = (mt_rand(-100, 100) / 100) * $volatility;
+                
+                // Apply the trend (going backwards in time, so we subtract)
+                $trendChange = $trend * ($i / $points) * $days;
+                
+                // Calculate the price for this point (going backwards)
+                $price = $price / (1 + $randomChange - $trendChange);
+                
+                // Add the data point
+                $formattedData[] = [
+                    'timestamp' => date('Y-m-d\TH:i:s\Z', $timestamp),
+                    'price' => $price,
+                    'volume_24h' => mt_rand(5000000000, 50000000000) / 1000000000,
+                    'market_cap' => $price * mt_rand(18000000, 19000000),
+                ];
+            }
+            
+            // Reverse the array to get chronological order
+            $formattedData = array_reverse($formattedData);
+            
+            return [
+                'data' => $formattedData,
+                'metadata' => [
+                    'id' => $id,
+                    'timeRange' => $timeRange,
+                    'interval' => $timeRangeMap[$timeRange]['days'] / $points,
+                    'convert' => $convert,
+                    'is_mock' => true
+                ]
+            ];
+        } catch (\Exception $e) {
+            Log::error('Error generating historical data: ' . $e->getMessage());
+            return null;
+        }
+    }
+    
 }

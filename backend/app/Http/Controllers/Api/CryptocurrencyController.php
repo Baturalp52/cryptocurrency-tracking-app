@@ -115,4 +115,30 @@ class CryptocurrencyController extends Controller
         return response()->json($data);
     }
     
+    /**
+     * Get historical price data for a cryptocurrency
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getHistoricalData(Request $request, $id)
+    {
+        $timeRange = $request->input('timeRange', '7d');
+        $convert = $request->input('convert', 'USD');
+        
+        // Validate time range
+        $validTimeRanges = ['1h', '1d', '7d', '30d', '90d', '365d'];
+        if (!in_array($timeRange, $validTimeRanges)) {
+            return response()->json(['error' => 'Invalid time range. Valid options are: ' . implode(', ', $validTimeRanges)], 400);
+        }
+        
+        $data = $this->coinMarketCapService->getHistoricalData($id, $timeRange, $convert);
+        
+        if ($data === null) {
+            return response()->json(['error' => 'Failed to fetch historical data'], 500);
+        }
+        
+        return response()->json($data);
+    }
 } 
