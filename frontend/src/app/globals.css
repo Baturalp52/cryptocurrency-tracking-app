@@ -208,6 +208,10 @@ h3,
   color: var(--danger-color);
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 /* ===== RESPONSIVE BREAKPOINTS ===== */
 /* Small devices (576px and up) */
 @media (min-width: 576px) {

@@ -2,7 +2,11 @@
 
 import React from "react";
 import { CryptocurrencyDetail } from "@/services/cryptocurrency/interface";
-import { formatCurrency, formatNumber, formatPercentage } from "./utils";
+import {
+  formatCurrency,
+  formatNumber,
+  formatPercentage,
+} from "@/utils/formatters";
 
 interface CryptoStatsProps {
   cryptoData: CryptocurrencyDetail;

@@ -160,6 +160,11 @@ body {
   box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
 }
 
+.btn-dark {
+  background-color: var(--bg-dark);
+  border-color: var(--border-color);
+}
+
 /* Form controls */
 .form-control {
   background-color: var(--bg-input);

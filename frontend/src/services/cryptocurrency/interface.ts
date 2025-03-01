@@ -15,6 +15,23 @@ export interface CryptocurrencyData {
   };
 }
 
+/**
+ * Interface for cryptocurrency search results
+ * This matches the structure returned by the backend search function
+ */
+export interface CryptocurrencySearchData {
+  id: number;
+  name: string;
+  symbol: string;
+  slug: string;
+  rank?: number;
+  price: number;
+  change24h: number;
+  marketCap?: number;
+  volume24h?: number;
+  logo?: string;
+}
+
 export interface TopCryptocurrenciesResponse {
   status: {
     timestamp: string;

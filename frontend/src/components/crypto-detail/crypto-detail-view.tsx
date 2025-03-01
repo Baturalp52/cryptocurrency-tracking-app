@@ -20,11 +20,11 @@ export default function CryptoDetailView({
   const { user } = useAuth();
 
   return (
-    <div className="crypto-detail-view">
+    <div>
       {/* Header with name, symbol, and price */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-start mb-4">
         <div>
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-2 flex-wrap">
             {cryptoData.logo && (
               <Image
                 src={cryptoData.logo}
