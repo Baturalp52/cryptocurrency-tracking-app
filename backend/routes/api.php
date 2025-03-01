@@ -24,19 +24,18 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 
 // Public cryptocurrency routes
-Route::get('/cryptocurrencies/top', [CryptocurrencyController::class, 'getTopCryptocurrencies']);
 
+Route::prefix('cryptocurrencies')->group(function () {
+    Route::get('/top', [CryptocurrencyController::class, 'getTopCryptocurrencies']);
+    Route::get('/search', [CryptocurrencyController::class, 'searchCryptocurrencies']);
+    Route::get('/{symbol}', [CryptocurrencyController::class, 'getCryptocurrency']);
+});
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     // User routes
     Route::get('/user', [LoginController::class, 'user']);
     Route::post('/logout', [LoginController::class, 'logout']);
     
-    // Protected cryptocurrency routes
-    Route::prefix('cryptocurrencies')->group(function () {
-        Route::get('/search', [CryptocurrencyController::class, 'searchCryptocurrencies']);
-        Route::get('/{symbol}', [CryptocurrencyController::class, 'getCryptocurrency']);
-    });
     
     // Watchlist routes
     Route::prefix('watchlists')->group(function () {
