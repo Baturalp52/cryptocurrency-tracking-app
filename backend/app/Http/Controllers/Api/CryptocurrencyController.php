@@ -66,12 +66,20 @@ class CryptocurrencyController extends Controller
         $query = $request->input('query');
         $limit = $request->input('limit', 20);
         $convert = $request->input('convert', 'USD');
+        $sortField = $request->input('by', 'marketCap');
+        $sortDirection = $request->input('order', 'desc');
 
         if (empty($query)) {
             return response()->json(['error' => 'Search query parameter is required'], 400);
         }
 
-        $data = $this->coinMarketCapService->searchCryptocurrencies($query, $limit, $convert);
+        $data = $this->coinMarketCapService->searchCryptocurrencies(
+            $query, 
+            $limit, 
+            $convert, 
+            $sortField, 
+            $sortDirection
+        );
 
         if ($data === null) {
             return response()->json(['error' => 'Failed to search cryptocurrencies'], 500);
@@ -79,4 +87,32 @@ class CryptocurrencyController extends Controller
 
         return response()->json($data);
     }
+
+    /**
+     * Get trending cryptocurrencies
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function trending(Request $request)
+    {
+        $limit = $request->input('limit', 20);
+        $convert = $request->input('convert', 'USD');
+        $sortField = $request->input('by', 'marketCap');
+        $sortDirection = $request->input('order', 'desc');
+        
+        $data = $this->coinMarketCapService->getTrendingCryptocurrencies(
+            $limit, 
+            $convert, 
+            $sortField, 
+            $sortDirection
+        );
+        
+        if ($data === null) {
+            return response()->json(['error' => 'Failed to fetch trending cryptocurrencies'], 500);
+        }
+        
+        return response()->json($data);
+    }
+    
 } 

@@ -24,12 +24,13 @@ Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 
 // Public cryptocurrency routes
-
 Route::prefix('cryptocurrencies')->group(function () {
     Route::get('/top', [CryptocurrencyController::class, 'getTopCryptocurrencies']);
+    Route::get('/trending', [CryptocurrencyController::class, 'trending']);
     Route::get('/search', [CryptocurrencyController::class, 'searchCryptocurrencies']);
     Route::get('/{symbol}', [CryptocurrencyController::class, 'getCryptocurrency']);
 });
+
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
     // User routes
