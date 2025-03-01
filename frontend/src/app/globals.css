@@ -68,6 +68,18 @@ h3,
   animation: fadeIn 0.5s ease-in-out;
 }
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
 /* ===== LAYOUT & CONTAINERS ===== */
 .container {
   padding-left: 15px;
@@ -116,6 +128,7 @@ h3,
 .h-4 {
   height: 2rem !important;
 }
+
 /* Spacing utilities */
 .py-4 {
   padding-top: 1.5rem !important;

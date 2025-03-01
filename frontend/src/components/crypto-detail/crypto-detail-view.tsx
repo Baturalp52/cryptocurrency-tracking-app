@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState } from "react";
 import { CryptocurrencyDetail } from "@/services/cryptocurrency/interface";
 import PriceChart from "./price-chart";
 import CryptoStats from "./crypto-stats";
@@ -8,8 +7,8 @@ import CryptoLinks from "./crypto-links";
 import CryptoDescription from "./crypto-description";
 import Image from "next/image";
 import { useAuth } from "@/contexts/auth-context";
-import { Star } from "lucide-react";
 import Link from "next/link";
+import AddToWatchList from "./add-to-watch-list";
 
 interface CryptoDetailViewProps {
   cryptoData: CryptocurrencyDetail;
@@ -19,16 +18,6 @@ export default function CryptoDetailView({
   cryptoData,
 }: CryptoDetailViewProps) {
   const { user } = useAuth();
-  const [isAddingToWatchlist, setIsAddingToWatchlist] = useState(false);
-
-  const handleAddToWatchlist = async () => {
-    try {
-      setIsAddingToWatchlist(true);
-    } finally {
-      setIsAddingToWatchlist(false);
-    }
-  };
-  console.log(cryptoData);
 
   return (
     <div className="crypto-detail-view">
@@ -63,29 +52,7 @@ export default function CryptoDetailView({
             </Link>
           </div>
         </div>
-        {!!user && (
-          <button
-            className="btn btn-primary"
-            onClick={handleAddToWatchlist}
-            disabled={isAddingToWatchlist}
-          >
-            {isAddingToWatchlist ? (
-              <>
-                <span
-                  className="spinner-border spinner-border-sm me-2"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                Adding...
-              </>
-            ) : (
-              <>
-                <Star className="me-2" size={16} />
-                Add to Watchlist
-              </>
-            )}
-          </button>
-        )}
+        {!!user && <AddToWatchList cryptoData={cryptoData} />}
       </div>
 
       {/* Price and chart */}
