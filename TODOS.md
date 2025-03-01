@@ -14,9 +14,9 @@
 
 - [x] Try to get the data from the API
 - [x] Create database migrations for models
-- [ ] Implement API service to fetch cryptocurrency data from CoinMarketCap
+- [x] Implement API service to fetch cryptocurrency data from CoinMarketCap
 - [x] Implement Laravel authentication for admin panel
-- [ ] Build API controllers and routes
+- [x] Build API controllers and routes
 - [x] Implement API authentication with Laravel Sanctum
 
 ## Frontend Development (Next.js)
@@ -25,10 +25,10 @@
 - [x] Configure Bootstrap integration
 - [x] Create responsive layouts with React components
 - [x] Implement API service for communication with Laravel backend
-- [ ] Build cryptocurrency listing page
+- [x] Build cryptocurrency listing page
 - [x] Create detailed cryptocurrency view with price charts
 - [ ] Implement interactive price charts using Chart.js
-- [ ] Add search and filter functionality
+- [x] Add search and filter functionality
 - [x] Create user authentication flow
 - [x] Implement favorites/watchlist feature
 - [x] Add dark/light mode toggle
