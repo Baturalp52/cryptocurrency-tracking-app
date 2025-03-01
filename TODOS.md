@@ -26,7 +26,7 @@
 - [x] Create responsive layouts with React components
 - [x] Implement API service for communication with Laravel backend
 - [ ] Build cryptocurrency listing page
-- [ ] Create detailed cryptocurrency view with price charts
+- [x] Create detailed cryptocurrency view with price charts
 - [ ] Implement interactive price charts using Chart.js
 - [ ] Add search and filter functionality
 - [x] Create user authentication flow
