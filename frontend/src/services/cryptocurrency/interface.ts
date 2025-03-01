@@ -325,3 +325,27 @@ export interface Tag {
   name: string;
   category: string;
 }
+
+/**
+ * Interface for historical price data point
+ */
+export interface HistoricalDataPoint {
+  timestamp: string;
+  price: number;
+  volume_24h: number | null;
+  market_cap: number | null;
+}
+
+/**
+ * Interface for historical data response
+ */
+export interface HistoricalDataResponse {
+  data: HistoricalDataPoint[];
+  metadata: {
+    id: number;
+    timeRange: string;
+    interval: string;
+    convert: string;
+    is_mock?: boolean;
+  };
+}

@@ -3,6 +3,7 @@ import {
   TopCryptocurrenciesResponse,
   CryptocurrencyDetailResponse,
   CryptocurrencySearchData,
+  HistoricalDataResponse,
 } from "./interface";
 
 /**
@@ -63,6 +64,29 @@ export const getCryptocurrencyDetail = async (
     return response.data;
   } catch (error) {
     console.error(`Error fetching cryptocurrency details for ID ${id}:`, error);
+    throw error;
+  }
+};
+
+/**
+ * Fetch historical price data for a cryptocurrency
+ * @param id CoinMarketCap ID of the cryptocurrency
+ * @param timeRange Time range (1h, 1d, 7d, 30d, 90d, 365d)
+ * @param convert Currency to convert to (default: USD)
+ * @returns Promise with historical price data
+ */
+export const getHistoricalData = async (
+  id: number,
+  timeRange: string = "7d",
+  convert: string = "USD"
+): Promise<HistoricalDataResponse> => {
+  try {
+    const response = await api.get<HistoricalDataResponse>(
+      `/cryptocurrencies/${id}/historical?timeRange=${timeRange}&convert=${convert}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching historical data for ID ${id}:`, error);
     throw error;
   }
 };

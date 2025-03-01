@@ -58,26 +58,6 @@ export default function CryptoDetailView({
       {/* Price and chart */}
       <div className="card mb-4">
         <div className="card-body">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <h2 className="h4 mb-0">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                }).format(cryptoData.quote.USD.price)}
-              </h2>
-              <div
-                className={
-                  cryptoData.quote.USD.percent_change_24h >= 0
-                    ? "text-success"
-                    : "text-danger"
-                }
-              >
-                {cryptoData.quote.USD.percent_change_24h >= 0 ? "+" : ""}
-                {cryptoData.quote.USD.percent_change_24h.toFixed(2)}% (24h)
-              </div>
-            </div>
-          </div>
           <PriceChart cryptoId={cryptoData.id} />
         </div>
       </div>
