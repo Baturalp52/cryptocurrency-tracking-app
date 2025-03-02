@@ -7,7 +7,7 @@
 - [x] Set up composer for dependency management
 - [x] Create Docker Compose file for database
 - [x] Configure database connection in Laravel
-- [ ] Create README.md with setup instructions
+- [x] Create README.md with setup instructions
 - [x] Create Next.js frontend project
 
 ## Backend Development (Laravel)
@@ -35,8 +35,8 @@
 
 ## Admin Panel
 
-- [ ] Implement cryptocurrency management (blacklist)
-- [ ] Create user management interface
+- [x] Implement cryptocurrency management (blacklist)
+- [x] Create user management interface
 - [x] Set up Laravel authorization using Gates and Policies
 
 ## Data Visualization
@@ -47,16 +47,10 @@
 
 ## Deployment
 
-- [ ] Set up development environment
-- [ ] Configure staging environment
-- [ ] Prepare production deployment strategy
-- [ ] Create deployment documentation
-- [ ] Implement monitoring and logging
-- [ ] Set up separate deployment for Laravel backend and Next.js frontend
+- [x] Set up development environment
+- [x] Set up separate deployment for Laravel backend and Next.js frontend
 
 ## Documentation
 
-- [ ] Create API documentation
-- [ ] Write user manual for admin panel
-- [ ] Document database schema
-- [ ] Document frontend component library
+- [x] Create backend documentation
+- [x] Create frontend documentation

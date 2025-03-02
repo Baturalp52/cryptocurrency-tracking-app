@@ -8,10 +8,89 @@ services:
       MYSQL_DATABASE: crypto_db
       MYSQL_USER: crypto_user
       MYSQL_PASSWORD: crypto_password
+      MYSQL_ROOT_PASSWORD: root_password
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - crypto_network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "crypto_user",
+          "-pcrypto_password",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Laravel Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: crypto_backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: crypto_db
+      DB_USERNAME: crypto_user
+      DB_PASSWORD: crypto_password
+    volumes:
+      - ./backend:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
+    ports:
+      - "8000:80"
+    networks:
+      - crypto_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: crypto_frontend
+    restart: always
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      # Client-side URL (browser access)
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api
+      # Server-side URL (internal Docker network)
+      SERVER_API_URL: http://backend:80/api
+      NODE_ENV: production
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    networks:
+      - crypto_network
+
+networks:
+  crypto_network:
+    driver: bridge
 
 volumes:
   mysql_data:
