@@ -4,9 +4,26 @@ import { TOKEN_COOKIE_NAME } from "@/utils/constants";
 import { getCookieServer } from "@/utils/cookies-server";
 import { toast } from "react-toastify";
 
-// Create a base axios instance with default config
+/**
+ * Get the API URL based on the environment (server-side vs client-side)
+ * In Docker:
+ * - Server-side should use http://backend:80/api (internal Docker network)
+ * - Client-side should use http://localhost:8000/api (browser access)
+ */
+const getApiUrl = () => {
+  // Server-side rendering (Next.js server in Docker)
+  if (typeof window === "undefined") {
+    // Use the Docker service name for internal communication
+    return process.env.SERVER_API_URL || "http://backend:80/api";
+  }
+
+  // Client-side rendering (browser)
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+};
+
+// Create a base axios instance with dynamic config
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api",
+  baseURL: getApiUrl(),
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -17,6 +34,10 @@ const api = axios.create({
 // Request interceptor for adding auth token
 api.interceptors.request.use(
   async (config) => {
+    // Refresh the baseURL on each request to ensure it's up-to-date
+    // This is important when the code is reused between server and client
+    config.baseURL = getApiUrl();
+
     // Get token from cookies if it exists
     let token;
 
@@ -111,13 +132,6 @@ api.interceptors.response.use(
             window.location.href = "/auth/login";
           }
         }
-      } else {
-        await fetch("http://localhost:3000/api/logout", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
       }
     }
 

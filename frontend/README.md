@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cryptocurrency Tracking App - Frontend
 
-## Getting Started
+Next.js frontend for the Cryptocurrency Tracking App that provides a user interface for viewing cryptocurrency data.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Real-time cryptocurrency price tracking
+- Interactive price charts using Chart.js
+- Responsive design with Bootstrap
+- User authentication
+- Watchlist functionality
+- Dark/light mode toggle
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Install dependencies:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   npm install
+   ```
 
-## Learn More
+2. Configure environment:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   cp example.env .env
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Update `.env` with your backend API URL:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```
+   # For local development
+   NEXT_PUBLIC_API_URL=http://localhost:8000/api
+   ```
 
-## Deploy on Vercel
+4. Start the development server:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Access the frontend at http://localhost:3000
+
+## Docker Environment Configuration
+
+When running in Docker, the frontend needs two different API URLs:
+
+1. **Server-side rendering (SSR)**: The Next.js server needs to communicate with the backend using the Docker network:
+
+   ```
+   SERVER_API_URL=http://backend:80/api
+   ```
+
+2. **Client-side rendering (CSR)**: The browser needs to access the backend through the exposed port:
+   ```
+   NEXT_PUBLIC_API_URL=http://localhost:8000/api
+   ```
+
+The docker-compose.yml file already sets these environment variables correctly.
+
+## Building for Production
+
+1. Create a production build:
+
+   ```bash
+   npm run build
+   ```
+
+2. Start the production server:
+   ```bash
+   npm start
+   ```
+
+## Docker Deployment (Production)
+
+If you prefer using Docker for deployment:
+
+1. From the project root, start all services:
+
+   ```bash
+   docker compose up -d
+   ```
+
+2. Access the frontend at http://localhost:3000
+
+## Main Pages
+
+- `/` - Home page with top cryptocurrencies
+- `/cryptocurrencies` - List of all cryptocurrencies
+- `/cryptocurrencies/[symbol]` - Detailed view of a cryptocurrency
+- `/auth/login` - Login page
+- `/auth/register` - Registration page
+- `/watchlists` - User's watchlists
+
+## License
+
+MIT License

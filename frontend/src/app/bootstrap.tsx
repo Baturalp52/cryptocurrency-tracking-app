@@ -4,7 +4,8 @@ import { useEffect } from "react";
 
 export default function Bootstrap() {
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+    // eslint-disable-next-line
+    void import("bootstrap/dist/js/bootstrap.bundle.min.js" as string);
   }, []);
 
   return <></>;

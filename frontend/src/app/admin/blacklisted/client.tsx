@@ -26,7 +26,6 @@ export default function BlacklistedCryptocurrenciesManagement({
         blacklistedCryptos.filter((crypto) => crypto.cmc_id !== id)
       );
       // TODO: Add toast notification
-      console.log("Cryptocurrency removed from blacklist successfully");
     } catch (error) {
       console.error("Failed to remove cryptocurrency from blacklist:", error);
       // TODO: Add toast notification
