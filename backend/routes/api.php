@@ -79,4 +79,16 @@ Route::middleware(['auth:sanctum', 'not.banned'])->group(function () {
                 Route::delete('/{id}', [BlacklistedCryptocurrencyController::class, 'destroy']);
             });
         });
+});
+
+/**
+ * Health Check Endpoint
+ */
+Route::get('/health', function () {
+    return response()->json([
+        'status' => 'ok',
+        'timestamp' => now()->toIso8601String(),
+        'environment' => config('app.env'),
+        'version' => config('app.version', '1.0.0'),
+    ]);
 }); 

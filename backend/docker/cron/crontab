@@ -1,0 +1,7 @@
+# Run Laravel scheduler every minute
+* * * * * cd /var/www/html && php artisan schedule:run >> /var/log/cron.log 2>&1
+
+# Run cryptocurrency data fetch command every hour
+0 * * * * cd /var/www/html && php artisan app:fetch-cryptocurrency-data --limit=100 >> /var/log/cron.log 2>&1
+
+# Empty line at the end is required for cron to work properly 

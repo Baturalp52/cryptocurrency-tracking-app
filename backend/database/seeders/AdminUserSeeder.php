@@ -14,6 +14,11 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Check if any user already exists
+        if (User::count() > 0) {
+            return;
+        }
+
         User::create([
             'name' => 'Admin User',
             'email' => 'admin@admin.com',

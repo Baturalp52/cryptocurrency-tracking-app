@@ -1,0 +1,37 @@
+# Ignore vendor directory (will be installed via composer)
+/vendor
+
+# Ignore node_modules
+/node_modules
+
+# Ignore bootstrap cache
+/bootstrap/cache/*.php
+
+# Ignore storage logs and other generated files
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/app/public/*
+
+
+# Ignore PHPUnit files
+.phpunit.result.cache
+phpunit.xml
+
+# Ignore IDE and editor files
+/.idea
+/.vscode
+*.sublime-project
+*.sublime-workspace
+
+# Ignore git and other VCS files
+/.git
+/.gitattributes
+/.gitignore
+
+# Ignore other unnecessary files
+*.log
+*.swp
+.DS_Store
+Thumbs.db 
