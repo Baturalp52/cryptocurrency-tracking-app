@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import SearchModal from "../search/search-modal";
 import { Search } from "lucide-react";
+import UserRole from "@/enums/user-role";
 
 // Define navigation links as constants
 const NAV_LINKS = [
@@ -17,6 +18,12 @@ const NAV_LINKS = [
 const AUTH_LINKS = [
   { href: "/auth/login", label: "Login" },
   { href: "/auth/signup", label: "Sign Up" },
+];
+
+// Define admin links as constants
+const ADMIN_LINKS = [
+  { href: "/admin/users", label: "Users" },
+  { href: "/admin/blacklisted", label: "Blacklisted Coins" },
 ];
 
 export default function Navbar() {
@@ -42,6 +49,9 @@ export default function Navbar() {
 
   // Define user-specific links
   const USER_LINKS = [{ href: "/watchlists", label: "Watchlists" }];
+
+  // Check if user is admin
+  const isAdmin = user?.role === UserRole.ADMIN;
 
   return (
     <>
@@ -100,6 +110,19 @@ export default function Navbar() {
                     </Link>
                   </li>
                 ))}
+              {isAdmin &&
+                ADMIN_LINKS.map((link) => (
+                  <li className="nav-item" key={link.href}>
+                    <Link
+                      href={link.href}
+                      className={`nav-link ${
+                        pathname.startsWith(link.href) ? "active" : ""
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
             </ul>
 
             <button
@@ -117,6 +140,9 @@ export default function Navbar() {
                 <>
                   <span className="navbar-text me-lg-3 mb-2 mb-lg-0 text-nowrap">
                     Welcome, {user.name}
+                    {isAdmin && (
+                      <span className="ms-1 badge bg-primary">Admin</span>
+                    )}
                   </span>
                   <button
                     className="btn btn-outline-primary w-100 w-lg-auto"

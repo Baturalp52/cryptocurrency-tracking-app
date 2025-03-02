@@ -160,6 +160,19 @@ body {
   box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
 }
 
+.btn-outline-danger {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+.btn-outline-danger:hover,
+.btn-outline-danger:focus {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.25);
+}
+
 .btn-dark {
   background-color: var(--bg-dark);
   border-color: var(--border-color);

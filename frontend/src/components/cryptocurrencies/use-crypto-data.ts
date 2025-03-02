@@ -37,15 +37,6 @@ function useCryptoData(
       let cryptoData: CryptocurrencySearchData[] = [];
 
       if (debouncedSearchQuery.trim()) {
-        // If there's a search query, fetch search results with sort parameters
-        cryptoData = await searchCryptocurrencies(
-          debouncedSearchQuery,
-          pageSize,
-          "USD",
-          sortField,
-          sortDirection
-        );
-
         // Update URL with search query and sort parameters
         window.history.pushState(
           {},
@@ -54,19 +45,26 @@ function useCryptoData(
             debouncedSearchQuery
           )}&by=${sortField}&order=${sortDirection}`
         );
-      } else {
-        // If no search query, fetch trending cryptocurrencies with sort parameters
-        cryptoData = await getTrendingCryptocurrencies(
+        // If there's a search query, fetch search results with sort parameters
+        cryptoData = await searchCryptocurrencies(
+          debouncedSearchQuery,
           pageSize,
+          "USD",
           sortField,
           sortDirection
         );
-
+      } else {
         // Update URL with sort parameters
         window.history.pushState(
           {},
           "",
           `/cryptocurrencies?by=${sortField}&order=${sortDirection}`
+        );
+        // If no search query, fetch trending cryptocurrencies with sort parameters
+        cryptoData = await getTrendingCryptocurrencies(
+          pageSize,
+          sortField,
+          sortDirection
         );
       }
 

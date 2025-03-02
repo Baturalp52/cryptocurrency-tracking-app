@@ -9,6 +9,8 @@ import Image from "next/image";
 import { useAuth } from "@/contexts/auth-context";
 import Link from "next/link";
 import AddToWatchList from "./add-to-watch-list";
+import BlacklistCrypto from "./blacklist-crypto";
+import UserRole from "@/enums/user-role";
 
 interface CryptoDetailViewProps {
   cryptoData: CryptocurrencyDetail;
@@ -18,6 +20,7 @@ export default function CryptoDetailView({
   cryptoData,
 }: CryptoDetailViewProps) {
   const { user } = useAuth();
+  const isAdmin = user?.role === UserRole.ADMIN;
 
   return (
     <div>
@@ -52,7 +55,10 @@ export default function CryptoDetailView({
             </Link>
           </div>
         </div>
-        {!!user && <AddToWatchList cryptoData={cryptoData} />}
+        <div className="d-flex flex-column flex-md-row gap-2">
+          {!!user && <AddToWatchList cryptoData={cryptoData} />}
+          {isAdmin && <BlacklistCrypto cryptoData={cryptoData} />}
+        </div>
       </div>
 
       {/* Price and chart */}

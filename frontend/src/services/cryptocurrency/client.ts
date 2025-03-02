@@ -44,7 +44,7 @@ export const getTrendingCryptocurrencies = async (
     }>(`/cryptocurrencies/trending?limit=${limit}&by=${by}&order=${order}`);
     return response.data.data;
   } catch (error) {
-    console.error("Error fetching trending cryptocurrencies:", error);
+    console.error(`Error fetching trending cryptocurrencies:`, error);
     throw error;
   }
 };

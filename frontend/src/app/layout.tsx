@@ -5,6 +5,8 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { ThemeProvider } from "@/contexts/theme-context";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import { getCurrentUser } from "@/services/auth";
@@ -76,6 +78,22 @@ export default async function RootLayout({
             <main className="py-4 flex-grow-1">{children}</main>
             <Footer />
             <Bootstrap />
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="colored"
+              className="toast-container"
+              toastClassName="toast-item"
+              closeButton
+              limit={3}
+            />
           </ThemeProvider>
         </AuthProvider>
       </body>

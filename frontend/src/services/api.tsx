@@ -2,6 +2,7 @@ import axios from "axios";
 import { getCookie, removeCookie } from "@/utils/cookies";
 import { TOKEN_COOKIE_NAME } from "@/utils/constants";
 import { getCookieServer } from "@/utils/cookies-server";
+import { toast } from "react-toastify";
 
 // Create a base axios instance with default config
 const api = axios.create({
@@ -41,6 +42,62 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
+    // Only show toast notifications in browser environment
+    if (typeof window !== "undefined") {
+      const { response } = error;
+
+      if (response) {
+        const { status, data } = response;
+
+        // Handle specific status codes
+        if (status >= 500) {
+          // Server errors - show generic message
+          toast.error(
+            "The server is currently unavailable. Please try again later."
+          );
+        } else if (status === 401) {
+          // Unauthorized - handled separately below
+          toast.warning("Your session has expired. Please log in again.");
+        } else if (status === 403) {
+          // Forbidden
+          const message =
+            data?.message ||
+            "You don't have permission to access this resource.";
+          toast.error(message);
+        } else {
+          // All other errors (including validation errors)
+          const message =
+            data?.message || "An error occurred. Please try again.";
+
+          // Show validation errors if available
+          if (data?.errors) {
+            const errorMessages = Object.entries(data.errors)
+              .map(([field, messages]) => {
+                const fieldErrors = Array.isArray(messages)
+                  ? messages[0]
+                  : messages;
+                return `${field}: ${fieldErrors}`;
+              })
+              .join("\n");
+
+            toast.error(
+              <div>
+                <div>{message}</div>
+                <div className="text-muted fs-7">{errorMessages}</div>
+              </div>
+            );
+          } else {
+            toast.error(message);
+          }
+        }
+      } else {
+        // Network errors or request cancelled
+        toast.error(
+          "Network error. Please check your connection and try again."
+        );
+      }
+    }
+
     // Handle 401 Unauthorized errors (token expired or invalid)
     if (error.response && error.response.status === 401) {
       // Clear user data from cookies

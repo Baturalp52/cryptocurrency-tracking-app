@@ -318,6 +318,20 @@ export interface CryptocurrencyDetail {
     announcement: string[];
   };
   category?: string;
+  blacklisted?: {
+    id: number;
+    symbol: string;
+    name: string | null;
+    cmc_id: string;
+    reason: string | null;
+    blacklisted_by: number | null;
+    blacklisted_by_user?: {
+      id: number;
+      name: string;
+    };
+    created_at: string;
+    updated_at: string;
+  } | null;
 }
 
 export interface Tag {
