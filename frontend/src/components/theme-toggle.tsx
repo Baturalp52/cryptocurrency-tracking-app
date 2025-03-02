@@ -13,12 +13,14 @@ export default function ThemeToggle() {
         className="btn-check"
         name="theme-options"
         id="theme-system"
-        checked={theme === "system"}
+        checked={theme === "system" || !theme}
         onChange={() => setTheme("system")}
         autoComplete="off"
       />
       <label
-        className="btn btn-outline-primary d-flex align-items-center gap-2"
+        className={`btn btn-outline-primary d-flex align-items-center gap-2 ${
+          theme === "system" || !theme ? "active" : ""
+        }`}
         htmlFor="theme-system"
       >
         <Laptop size={16} />
@@ -35,7 +37,9 @@ export default function ThemeToggle() {
         autoComplete="off"
       />
       <label
-        className="btn btn-outline-primary d-flex align-items-center gap-2"
+        className={`btn btn-outline-primary d-flex align-items-center gap-2 ${
+          theme === "light" ? "active" : ""
+        }`}
         htmlFor="theme-light"
       >
         <Sun size={16} />
@@ -52,7 +56,9 @@ export default function ThemeToggle() {
         autoComplete="off"
       />
       <label
-        className="btn btn-outline-primary d-flex align-items-center gap-2"
+        className={`btn btn-outline-primary d-flex align-items-center gap-2 ${
+          theme === "dark" ? "active" : ""
+        }`}
         htmlFor="theme-dark"
       >
         <Moon size={16} />
