@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -24,10 +25,16 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        // Check if user exists before attempting authentication
+        $user = User::where('email', $request->email)->first();
+        
+        // If user exists, check if they are banned
+        if ($user && $user->isBanned()) {
+            return response()->json(['message' => 'Your account has been banned. Please contact support for assistance.'], 403);
+        }
+
         if (!Auth::attempt($request->only('email', 'password'))) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json(['message' => 'The provided credentials are incorrect.'], 401);
         }
 
         $user = $request->user();

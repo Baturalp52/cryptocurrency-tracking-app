@@ -86,5 +86,3 @@ rm $TEMP_CRONTAB
 echo "Cryptocurrency data fetching cron job has been added successfully"
 echo "The command will run every minute and log output to $PROJECT_PATH/storage/logs/crypto-fetch.log"
 echo "Using PHP at: $PHP_PATH"
-echo ""
-echo "To test the command directly without cron, run: sudo $0 --test" 

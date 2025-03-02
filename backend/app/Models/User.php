@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserRole;
+use App\Enums\UserStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'status',
     ];
 
     /**
@@ -48,6 +50,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role' => UserRole::class,
+            'status' => UserStatus::class,
         ];
     }
 
@@ -69,6 +72,26 @@ class User extends Authenticatable
     public function isMember(): bool
     {
         return $this->role->isMember();
+    }
+
+    /**
+     * Check if user is active
+     *
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->status->isActive();
+    }
+
+    /**
+     * Check if user is banned
+     *
+     * @return bool
+     */
+    public function isBanned(): bool
+    {
+        return $this->status->isBanned();
     }
 
     /**

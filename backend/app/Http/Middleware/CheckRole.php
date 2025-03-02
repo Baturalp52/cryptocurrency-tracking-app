@@ -26,7 +26,6 @@ class CheckRole
             if (!$request->user()->hasAdminAccess()) {
                 return response()->json([
                     'message' => 'Unauthorized. Admin access required.',
-                    'status' => 'error'
                 ], 403);
             }
         }

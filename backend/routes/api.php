@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\BlacklistedCryptocurrencyController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Api\CryptocurrencyController;
 use App\Http\Controllers\Api\WatchlistController;
 use App\Http\Controllers\Auth\LoginController;
@@ -33,7 +34,7 @@ Route::prefix('cryptocurrencies')->group(function () {
 });
 
 // Protected routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'not.banned'])->group(function () {
     // User routes
     Route::get('/user', [LoginController::class, 'user']);
     Route::post('/logout', [LoginController::class, 'logout']);
@@ -60,9 +61,22 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('admin')
         ->middleware('role:admin')
         ->group(function () {
-            Route::get('/users', [AdminController::class, 'users']);
-            Route::post('/users/admin', [AdminController::class, 'createAdmin']);
-            Route::put('/users/{id}/role', [AdminController::class, 'updateUserRole']);
-            Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
+            // User management
+            Route::prefix('users')->group(function () {
+                Route::get('/', [UserController::class, 'index']);
+                Route::post('/', [UserController::class, 'store']);
+                Route::put('/{id}/role', [UserController::class, 'updateRole']);
+                Route::put('/{id}/status', [UserController::class, 'updateStatus']);
+                Route::post('/{id}/ban', [UserController::class, 'ban']);
+                Route::post('/{id}/unban', [UserController::class, 'unban']);
+                Route::delete('/{id}', [UserController::class, 'destroy']);
+            });
+            
+            // Blacklisted cryptocurrency management
+            Route::prefix('blacklisted-cryptocurrencies')->group(function () {
+                Route::get('/', [BlacklistedCryptocurrencyController::class, 'index']);
+                Route::post('/', [BlacklistedCryptocurrencyController::class, 'store']);
+                Route::delete('/{id}', [BlacklistedCryptocurrencyController::class, 'destroy']);
+            });
         });
 }); 
